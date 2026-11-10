@@ -85,8 +85,50 @@
   .diff button[aria-pressed="true"][data-d="difficile"] { background: var(--red); border-color: var(--red); color: #fff; }
   .diff-desc { color: var(--muted); font-size: 15px; text-align: center; min-height: 20px; }
 
-  .modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  @media (max-width: 1000px) { .modes { grid-template-columns: 1fr; } }
+  .modes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  @media (max-width: 800px) { .modes { grid-template-columns: 1fr; } }
+  .mode.pc { border-top: 8px solid var(--blue); }
+  .mode.pc .rain-rules li { background: #e3edff; }
+  .play-btn.blue { background: var(--blue); box-shadow: 0 5px 0 #2a5bc7; }
+  .play-btn.blue:active { box-shadow: 0 2px 0 #2a5bc7; }
+  .btn-row { display: flex; gap: 10px; }
+  .btn-row .play-btn { flex: 1; font-size: 19px; }
+
+  /* ---------- esploratore del PC ---------- */
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .tab { border: 2px solid var(--line); background: var(--paper); border-radius: 999px; padding: 8px 18px; font-weight: 800; color: var(--ink); }
+  .tab[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .pc-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 16px; align-items: start; }
+  @media (max-width: 860px) { .pc-grid { grid-template-columns: 1fr; } }
+  .scene { padding: 10px; }
+  .scene svg { width: 100%; height: auto; display: block; }
+  .part { cursor: pointer; transition: filter .15s; }
+  .part:hover { filter: drop-shadow(0 0 6px #ffc93c) drop-shadow(0 0 2px #ffc93c); }
+  .part.found { filter: drop-shadow(0 0 3px #22a765); }
+  .part.right { animation: glowGood .9s; filter: drop-shadow(0 0 8px #22a765) drop-shadow(0 0 3px #22a765); }
+  .part.wrong { animation: shake .3s; filter: drop-shadow(0 0 8px #e5484d); }
+  .part.reveal { filter: drop-shadow(0 0 10px #ffc93c) drop-shadow(0 0 4px #ff6b3d); animation: pulse .6s 3; }
+  @keyframes glowGood { 0% { opacity: .4; } 100% { opacity: 1; } }
+  @keyframes pulse { 50% { opacity: .5; } }
+  .scene-label { font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 18px; fill: #1f2a44; pointer-events: none; }
+  .side h3 { margin: 0 0 4px; font-size: 26px; }
+  .side .big { font-size: 54px; line-height: 1; }
+  .tag { display: inline-block; border-radius: 999px; padding: 3px 12px; font-size: 13px; font-weight: 800; color: #fff; margin: 6px 0 10px; }
+  .tag.input { background: var(--green); } .tag.output { background: var(--orange); }
+  .tag.memoria { background: var(--purple); } .tag.interno { background: var(--blue); } .tag.contenitore { background: var(--muted); }
+  .side p { margin: 0 0 10px; font-size: 17px; line-height: 1.5; }
+  .fun { background: #fff6d8; border-radius: 12px; padding: 10px 12px; font-size: 15px; }
+  .found-bar { height: 12px; background: #eee6d6; border-radius: 999px; overflow: hidden; margin: 8px 0 4px; }
+  .found-bar div { height: 100%; background: var(--green); width: 0; transition: width .3s; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .chip { font-size: 13px; font-weight: 800; padding: 4px 10px; border-radius: 999px; background: #f1ece2; color: var(--muted); }
+  .chip.on { background: var(--green-soft); color: var(--green); }
+  .question { font-family: 'Fredoka', sans-serif; font-size: 24px; line-height: 1.3; margin: 6px 0 12px; }
+  .q-count { color: var(--muted); font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: .5px; }
+  .timer { height: 10px; background: #eee6d6; border-radius: 999px; overflow: hidden; margin-bottom: 12px; }
+  .timer div { height: 100%; background: var(--orange); width: 100%; }
+  .q-feedback { font-weight: 800; min-height: 24px; font-size: 17px; }
+  .q-feedback.good { color: var(--green); } .q-feedback.bad { color: var(--red); }
   .mode h3 { margin: 0 0 6px; font-size: 26px; display: flex; align-items: center; gap: 10px; }
   .mode p { margin: 0 0 16px; color: var(--muted); }
   .mode .big-emoji { font-size: 34px; }
@@ -339,6 +381,19 @@
         </ul>
         <button class="play-btn green" id="playDino">Corri! ▶</button>
       </div>
+      <div class="card mode pc">
+        <h3><span class="big-emoji">🖥️</span> Esploratore del PC</h3>
+        <p>Scopri come è fatto un computer, fuori e dentro il case, e poi mettiti alla prova con il quiz!</p>
+        <ul class="rain-rules">
+          <li>🔍 Esplora: clicca sui pezzi per scoprire a cosa servono</li>
+          <li>❓ Quiz: leggi l'indizio e clicca sul componente giusto</li>
+          <li>🧠 Impari i nomi veri: CPU, RAM, scheda madre…</li>
+        </ul>
+        <div class="btn-row">
+          <button class="play-btn blue" id="playPcExplore">🔍 Esplora</button>
+          <button class="play-btn blue" id="playPcQuiz">❓ Quiz</button>
+        </div>
+      </div>
     </div>
 
     <div class="records" id="records"></div>
@@ -419,6 +474,128 @@
     <div class="runner" id="runner"><canvas id="dinoCanvas"></canvas></div>
     <p class="dino-hint">Tieni premuto <b>Ctrl</b> (o <b>Maiusc</b>) e poi premi la lettera, quando l'ostacolo è nella zona gialla!</p>
     <div class="kb-slot" id="dinoKb"></div>
+  </section>
+
+  <!-- ================= ESPLORATORE DEL PC ================= -->
+  <section class="screen" id="pc">
+    <div class="topbar">
+      <h2>🖥️ Esploratore del PC <span class="pill" id="pcPill"></span></h2>
+      <div style="display:flex; gap:8px">
+        <button class="btn" id="pcModeBtn">❓ Vai al quiz</button>
+        <button class="btn" id="pcMenu">🏠 Menu</button>
+      </div>
+    </div>
+    <div class="tabs" id="viewTabs">
+      <button class="tab" data-v="fuori">🖥️ La scrivania</button>
+      <button class="tab" data-v="dentro">🔧 Dentro il case</button>
+    </div>
+    <div class="pc-grid">
+      <div class="card scene">
+        <svg id="sceneFuori" viewBox="0 0 800 420" aria-label="Scrivania con il computer">
+          <rect x="0" y="0" width="800" height="330" fill="#eef6ff"/>
+          <rect x="560" y="30" width="190" height="90" rx="8" fill="#cfe6ff" stroke="#fff" stroke-width="6"/>
+          <rect x="0" y="330" width="800" height="90" fill="#c98b52"/>
+          <rect x="0" y="330" width="800" height="12" fill="#b37440"/>
+
+          <g class="part" data-part="stampante">
+            <rect x="30" y="250" width="140" height="80" rx="10" fill="#e9ecf2" stroke="#8a93a6" stroke-width="3"/>
+            <rect x="50" y="228" width="100" height="26" fill="#fff" stroke="#8a93a6" stroke-width="3"/>
+            <rect x="48" y="285" width="104" height="10" rx="3" fill="#59627a"/>
+            <circle cx="150" cy="268" r="5" fill="#22a765"/>
+          </g>
+          <g class="part" data-part="casse">
+            <rect x="195" y="210" width="44" height="120" rx="8" fill="#2c3245"/>
+            <circle cx="217" cy="240" r="12" fill="#59627a"/><circle cx="217" cy="290" r="17" fill="#59627a"/>
+            <rect x="541" y="210" width="44" height="120" rx="8" fill="#2c3245"/>
+            <circle cx="563" cy="240" r="12" fill="#59627a"/><circle cx="563" cy="290" r="17" fill="#59627a"/>
+          </g>
+          <g class="part" data-part="monitor">
+            <rect x="370" y="250" width="40" height="55" fill="#59627a"/>
+            <rect x="330" y="300" width="120" height="14" rx="5" fill="#59627a"/>
+            <rect x="250" y="80" width="280" height="175" rx="10" fill="#2c3245"/>
+            <rect x="262" y="92" width="256" height="151" rx="4" fill="#5fb4ff"/>
+            <circle cx="320" cy="140" r="22" fill="#ffd84d"/>
+            <path d="M262 243 L340 175 L390 215 L440 165 L518 243 Z" fill="#4bb86e"/>
+          </g>
+          <g class="part" data-part="webcam">
+            <rect x="370" y="58" width="40" height="22" rx="8" fill="#1f2a44"/>
+            <circle cx="390" cy="69" r="7" fill="#5fb4ff" stroke="#fff" stroke-width="2"/>
+          </g>
+          <g class="part" data-part="tastiera">
+            <rect x="262" y="314" width="250" height="30" rx="6" fill="#d9dee8" stroke="#8a93a6" stroke-width="3"/>
+            <g fill="#fff">
+              <rect x="272" y="320" width="16" height="7" rx="2"/><rect x="292" y="320" width="16" height="7" rx="2"/><rect x="312" y="320" width="16" height="7" rx="2"/><rect x="332" y="320" width="16" height="7" rx="2"/><rect x="352" y="320" width="16" height="7" rx="2"/><rect x="372" y="320" width="16" height="7" rx="2"/><rect x="392" y="320" width="16" height="7" rx="2"/><rect x="412" y="320" width="16" height="7" rx="2"/><rect x="432" y="320" width="16" height="7" rx="2"/><rect x="452" y="320" width="16" height="7" rx="2"/><rect x="472" y="320" width="30" height="7" rx="2"/>
+              <rect x="272" y="331" width="36" height="7" rx="2"/><rect x="312" y="331" width="150" height="7" rx="2"/><rect x="466" y="331" width="36" height="7" rx="2"/>
+            </g>
+          </g>
+          <g class="part" data-part="mouse">
+            <path d="M525 330 Q530 300 545 302" fill="none" stroke="#59627a" stroke-width="2"/>
+            <ellipse cx="545" cy="330" rx="15" ry="20" fill="#d9dee8" stroke="#8a93a6" stroke-width="3"/>
+            <line x1="545" y1="312" x2="545" y2="325" stroke="#8a93a6" stroke-width="3"/>
+          </g>
+          <g class="part" data-part="case">
+            <rect x="620" y="120" width="120" height="210" rx="10" fill="#3a4157"/>
+            <rect x="634" y="136" width="92" height="20" rx="4" fill="#2c3245"/>
+            <circle cx="680" cy="190" r="10" fill="#2c3245" stroke="#5fb4ff" stroke-width="3"/>
+            <g stroke="#2c3245" stroke-width="4"><line x1="640" y1="240" x2="720" y2="240"/><line x1="640" y1="255" x2="720" y2="255"/><line x1="640" y1="270" x2="720" y2="270"/><line x1="640" y1="285" x2="720" y2="285"/></g>
+          </g>
+          <g class="part" data-part="usb">
+            <rect x="740" y="205" width="34" height="16" rx="4" fill="#ff6b3d"/>
+            <rect x="730" y="208" width="12" height="10" fill="#c3c9d6"/>
+          </g>
+        </svg>
+
+        <svg id="sceneDentro" viewBox="0 0 800 420" aria-label="L'interno del case" style="display:none">
+          <rect x="0" y="0" width="800" height="420" fill="#eef6ff"/>
+          <rect x="110" y="20" width="580" height="385" rx="14" fill="#3a4157"/>
+          <rect x="124" y="34" width="552" height="357" rx="8" fill="#2c3245"/>
+          <g class="part" data-part="scheda-madre">
+            <rect x="145" y="50" width="390" height="300" rx="6" fill="#1f8a55"/>
+            <g stroke="#7fd7a6" stroke-width="2" fill="none" opacity=".7">
+              <path d="M160 70 H280 V100"/><path d="M380 80 H440 V60"/><path d="M160 220 H230"/><path d="M450 230 H520 V330"/>
+              <path d="M170 330 H300"/><path d="M500 70 V200"/>
+            </g>
+            <rect x="160" y="300" width="60" height="30" rx="3" fill="#145c39"/>
+            <circle cx="470" cy="320" r="10" fill="#c3c9d6"/>
+          </g>
+          <g class="part" data-part="cpu">
+            <rect x="265" y="95" width="90" height="90" rx="6" fill="#c3c9d6" stroke="#8a93a6" stroke-width="3"/>
+            <circle cx="310" cy="140" r="34" fill="#59627a"/>
+            <g fill="#8a93a6"><path d="M310 140 L310 110 Q330 112 334 128Z"/><path d="M310 140 L340 150 Q332 168 316 170Z"/><path d="M310 140 L290 162 Q278 148 282 130Z"/></g>
+            <circle cx="310" cy="140" r="7" fill="#c3c9d6"/>
+          </g>
+          <g class="part" data-part="ram">
+            <rect x="395" y="70" width="16" height="140" rx="2" fill="#1f2a44"/>
+            <rect x="418" y="70" width="16" height="140" rx="2" fill="#1f2a44"/>
+            <g fill="#ffc93c"><rect x="398" y="80" width="10" height="16"/><rect x="398" y="105" width="10" height="16"/><rect x="398" y="130" width="10" height="16"/><rect x="398" y="155" width="10" height="16"/><rect x="421" y="80" width="10" height="16"/><rect x="421" y="105" width="10" height="16"/><rect x="421" y="130" width="10" height="16"/><rect x="421" y="155" width="10" height="16"/></g>
+          </g>
+          <g class="part" data-part="scheda-video">
+            <rect x="175" y="240" width="320" height="50" rx="6" fill="#1a1f2e" stroke="#59627a" stroke-width="3"/>
+            <circle cx="255" cy="265" r="20" fill="#3a4157"/><circle cx="255" cy="265" r="6" fill="#8a93a6"/>
+            <circle cx="345" cy="265" r="20" fill="#3a4157"/><circle cx="345" cy="265" r="6" fill="#8a93a6"/>
+            <rect x="400" y="255" width="80" height="6" rx="3" fill="#ff6b3d"/>
+          </g>
+          <g class="part" data-part="ssd">
+            <rect x="565" y="60" width="95" height="55" rx="5" fill="#1f2a44"/>
+            <rect x="575" y="72" width="50" height="10" rx="2" fill="#8b5cf6"/>
+            <text x="575" y="104" font-family="Nunito, sans-serif" font-weight="800" font-size="13" fill="#c3c9d6">SSD</text>
+          </g>
+          <g class="part" data-part="hard-disk">
+            <rect x="565" y="135" width="95" height="120" rx="6" fill="#c3c9d6" stroke="#8a93a6" stroke-width="3"/>
+            <circle cx="612" cy="185" r="32" fill="#e9ecf2" stroke="#8a93a6" stroke-width="2"/>
+            <circle cx="612" cy="185" r="6" fill="#8a93a6"/>
+            <line x1="640" y1="235" x2="618" y2="192" stroke="#59627a" stroke-width="5" stroke-linecap="round"/>
+          </g>
+          <g class="part" data-part="alimentatore">
+            <rect x="555" y="285" width="115" height="95" rx="6" fill="#59627a"/>
+            <circle cx="612" cy="332" r="30" fill="#3a4157"/>
+            <g stroke="#8a93a6" stroke-width="3"><line x1="584" y1="332" x2="640" y2="332"/><line x1="612" y1="304" x2="612" y2="360"/></g>
+            <path d="M600 300 L590 320 H604 L596 340" fill="none" stroke="#ffc93c" stroke-width="4" stroke-linejoin="round" transform="translate(48 -8)"/>
+          </g>
+        </svg>
+      </div>
+      <div class="card side" id="pcSide"></div>
+    </div>
   </section>
 </main>
 
@@ -595,10 +772,11 @@ function renderRecords() {
   $('records').innerHTML = `
     <div class="record"><b>${store.get('bestWpm_' + difficulty, 0)} ppm</b><span>🏆 Record gara (${d})</span></div>
     <div class="record"><b>${store.get('bestRain_' + difficulty, 0)}</b><span>🏆 Record pioggia (${d})</span></div>
-    <div class="record"><b>${store.get('bestDino_' + difficulty, 0)}</b><span>🏆 Record corsa (${d})</span></div>`;
+    <div class="record"><b>${store.get('bestDino_' + difficulty, 0)}</b><span>🏆 Record corsa (${d})</span></div>
+    <div class="record"><b>${store.get('bestPc_' + difficulty, 0)}</b><span>🏆 Record quiz PC (${d})</span></div>`;
 }
 function goMenu() {
-  stopRace(); stopRain(); stopDino(); hideResult();
+  stopRace(); stopRain(); stopDino(); stopPc(); hideResult();
   show('menu'); renderRecords();
 }
 $('goHome').onclick = goMenu;
@@ -1294,6 +1472,234 @@ function endDino() {
       actions: [['↻ Corri ancora', startDino, true], ['🏠 Menu', goMenu]],
     });
   }, 600);
+}
+
+/* ======================= ESPLORATORE DEL PC ======================= */
+const PARTS = {
+  monitor:        { name: 'Monitor', emoji: '🖥️', view: 'fuori', type: 'output',
+    clue: 'Mostra immagini, video e tutto quello che fai.',
+    info: 'È lo schermo del computer: mostra le immagini, i video, i giochi e quello che scrivi.',
+    fun: 'Le immagini sono fatte di milioni di puntini colorati chiamati pixel.' },
+  tastiera:       { name: 'Tastiera', emoji: '⌨️', view: 'fuori', type: 'input',
+    clue: 'Serve a scrivere lettere, numeri e simboli.',
+    info: 'Con la tastiera scrivi testi e dai comandi al computer, anche con le scorciatoie come Ctrl + C.',
+    fun: 'L\'ordine delle lettere QWERTY viene dalle vecchie macchine da scrivere!' },
+  mouse:          { name: 'Mouse', emoji: '🖱️', view: 'fuori', type: 'input',
+    clue: 'Muove la freccia sullo schermo e ti fa cliccare.',
+    info: 'Quando muovi il mouse sul tavolo, la freccia si muove sullo schermo. Con i tasti clicchi e con la rotellina scorri.',
+    fun: 'Si chiama mouse ("topo") perché il filo sembrava una coda!' },
+  casse:          { name: 'Casse', emoji: '🔊', view: 'fuori', type: 'output',
+    clue: 'Fanno uscire suoni, voci e musica.',
+    info: 'Le casse trasformano i segnali del computer in suoni che puoi sentire. Al posto delle casse puoi usare le cuffie.',
+    fun: 'Dentro ogni cassa c\'è una membrana che vibra avanti e indietro.' },
+  webcam:         { name: 'Webcam', emoji: '📷', view: 'fuori', type: 'input',
+    clue: 'Una piccola telecamera per le videochiamate.',
+    info: 'La webcam riprende il tuo viso e lo manda al computer, per esempio durante una videochiamata.',
+    fun: 'Quasi tutti i portatili hanno la webcam sopra lo schermo.' },
+  stampante:      { name: 'Stampante', emoji: '🖨️', view: 'fuori', type: 'output',
+    clue: 'Porta su carta testi e immagini.',
+    info: 'La stampante prende un documento dal computer e lo stampa su un foglio con inchiostro o toner.',
+    fun: 'Esistono anche stampanti 3D che creano oggetti di plastica!' },
+  case:           { name: 'Case', emoji: '🗄️', view: 'fuori', type: 'contenitore',
+    clue: 'La scatola che contiene e protegge i pezzi interni.',
+    info: 'Il case è la "scatola" del computer. Dentro ci sono i componenti più importanti: clicca su "Dentro il case" per vederli!',
+    fun: 'Molti pensano che il case sia "la CPU", ma la CPU è solo uno dei pezzi dentro.' },
+  usb:            { name: 'Chiavetta USB', emoji: '🔌', view: 'fuori', type: 'memoria',
+    clue: 'Piccola memoria da attaccare per portare i file con te.',
+    info: 'La chiavetta USB si collega a una porta del computer e serve a salvare file e portarli su un altro PC.',
+    fun: 'USB vuol dire "Universal Serial Bus": una presa universale.' },
+  'scheda-madre': { name: 'Scheda madre', emoji: '🟩', view: 'dentro', type: 'interno',
+    clue: 'La grande scheda a cui sono collegati tutti gli altri pezzi.',
+    info: 'La scheda madre è come una città con tante strade: collega CPU, RAM, scheda video e memorie, e li fa parlare tra loro.',
+    fun: 'Le righe che vedi sono piste di rame: le "strade" dei dati.' },
+  cpu:            { name: 'CPU (processore)', emoji: '🧠', view: 'dentro', type: 'interno',
+    clue: 'Il cervello del computer: fa tutti i calcoli.',
+    info: 'La CPU esegue i programmi facendo miliardi di calcoli al secondo. Sopra ha una ventola perché scalda molto.',
+    fun: 'CPU vuol dire "Central Processing Unit", unità centrale di elaborazione.' },
+  ram:            { name: 'RAM', emoji: '⚡', view: 'dentro', type: 'memoria',
+    clue: 'Memoria velocissima che si svuota quando spegni il PC.',
+    info: 'La RAM tiene i programmi che stai usando in questo momento. È veloce, ma quando spegni il computer si cancella.',
+    fun: 'Più RAM hai, più programmi puoi tenere aperti insieme.' },
+  'scheda-video': { name: 'Scheda video', emoji: '🎮', view: 'dentro', type: 'interno',
+    clue: 'Crea le immagini da mandare al monitor, utile per i videogiochi.',
+    info: 'La scheda video (GPU) disegna le immagini, i video e i giochi 3D e li manda al monitor.',
+    fun: 'Una scheda video moderna ha migliaia di piccoli processori.' },
+  ssd:            { name: 'SSD', emoji: '💾', view: 'dentro', type: 'memoria',
+    clue: 'Memoria veloce e senza parti che si muovono, dove restano i file.',
+    info: 'L\'SSD conserva file, foto e programmi anche a computer spento. Non ha pezzi che girano, per questo è molto veloce.',
+    fun: 'Con un SSD il computer si accende in pochi secondi.' },
+  'hard-disk':    { name: 'Hard disk', emoji: '💿', view: 'dentro', type: 'memoria',
+    clue: 'Memoria con un disco che gira, conserva tantissimi file.',
+    info: 'L\'hard disk salva i dati su un disco che gira velocissimo, letto da un braccino. È più lento dell\'SSD ma contiene tanto.',
+    fun: 'Il disco può girare 7.200 volte al minuto!' },
+  alimentatore:   { name: 'Alimentatore', emoji: '🔋', view: 'dentro', type: 'interno',
+    clue: 'Prende la corrente dalla presa e la dà a tutti i pezzi.',
+    info: 'L\'alimentatore trasforma la corrente della presa di casa in quella giusta per ogni componente del computer.',
+    fun: 'Senza alimentatore nessun pezzo si accenderebbe.' },
+};
+const TYPE_LABEL = { input: '⬅️ Dispositivo di input (entrata)', output: '➡️ Dispositivo di output (uscita)', memoria: '💾 Memoria', interno: '🔧 Componente interno', contenitore: '📦 Contenitore' };
+const PC_QUIZ = {
+  facile:    { views: ['fuori'], ask: 'name', count: 8, time: 0 },
+  medio:     { views: ['fuori', 'dentro'], ask: 'clue', count: 10, time: 0 },
+  difficile: { views: ['fuori', 'dentro'], ask: 'clue', count: 12, time: 12 },
+};
+const pc = { mode: 'explore', view: 'fuori', found: new Set() };
+
+function setView(v) {
+  pc.view = v;
+  $('sceneFuori').style.display = v === 'fuori' ? '' : 'none';
+  $('sceneDentro').style.display = v === 'dentro' ? '' : 'none';
+  document.querySelectorAll('#viewTabs .tab').forEach(t => t.setAttribute('aria-pressed', t.dataset.v === v));
+}
+document.querySelectorAll('#viewTabs .tab').forEach(t => t.onclick = () => { if (pc.mode === 'explore') setView(t.dataset.v); });
+document.querySelectorAll('.part').forEach(p => p.addEventListener('click', () => onPartClick(p.dataset.part, p)));
+$('pcMenu').onclick = goMenu;
+$('pcModeBtn').onclick = () => pc.mode === 'explore' ? startPcQuiz() : startPcExplore();
+$('playPcExplore').onclick = startPcExplore;
+$('playPcQuiz').onclick = startPcQuiz;
+
+function clearPartMarks() { document.querySelectorAll('.part').forEach(p => p.classList.remove('right', 'wrong', 'reveal', 'found')); }
+function partEl(id) { return document.querySelector(`.part[data-part="${id}"]`); }
+
+function startPcExplore() {
+  stopPc(); hideResult();
+  pc.mode = 'explore';
+  $('pcPill').textContent = 'Esplora'; $('pcPill').className = 'pill facile';
+  $('pcModeBtn').textContent = '❓ Vai al quiz';
+  $('viewTabs').style.visibility = '';
+  clearPartMarks();
+  pc.found.forEach(id => partEl(id).classList.add('found'));
+  setView('fuori');
+  show('pc');
+  renderExplore(null);
+}
+function renderExplore(id) {
+  const n = pc.found.size, tot = Object.keys(PARTS).length;
+  const chips = Object.entries(PARTS).map(([k, p]) => `<span class="chip ${pc.found.has(k) ? 'on' : ''}">${pc.found.has(k) ? p.name : '???'}</span>`).join('');
+  let body;
+  if (!id) {
+    body = `<div class="big">🔍</div><h3>Esplora il computer</h3>
+      <p>Clicca su un pezzo del disegno per scoprire come si chiama e a cosa serve. Poi guarda anche <b>dentro il case</b>!</p>`;
+  } else {
+    const p = PARTS[id];
+    body = `<div class="big">${p.emoji}</div><h3>${p.name}</h3>
+      <span class="tag ${p.type}">${TYPE_LABEL[p.type]}</span>
+      <p>${p.info}</p><div class="fun">💡 <b>Lo sapevi?</b> ${p.fun}</div>`;
+  }
+  $('pcSide').innerHTML = body + `
+    <div style="margin-top:16px; font-weight:800">Pezzi scoperti: ${n} / ${tot}</div>
+    <div class="found-bar"><div style="width:${n / tot * 100}%"></div></div>
+    <div class="chips">${chips}</div>`;
+}
+
+function startPcQuiz() {
+  stopPc(); hideResult();
+  const cfg = PC_QUIZ[difficulty];
+  const pool = Object.keys(PARTS).filter(k => cfg.views.includes(PARTS[k].view));
+  const qs = [];
+  while (qs.length < cfg.count) {
+    const shuffled = [...pool].sort(() => Math.random() - 0.5);
+    for (const k of shuffled) if (qs.length < cfg.count && qs[qs.length - 1] !== k) qs.push(k);
+  }
+  Object.assign(pc, { mode: 'quiz', cfg, qs, qi: -1, score: 0, correct: 0, tries: 0, locked: false, timer: 0 });
+  $('pcPill').textContent = DIFF[difficulty].label; $('pcPill').className = 'pill ' + difficulty;
+  $('pcModeBtn').textContent = '🔍 Vai a esplorare';
+  $('viewTabs').style.visibility = 'hidden';
+  show('pc');
+  nextQuestion();
+}
+function stopPc() { clearInterval(pc.timer); pc.timer = 0; }
+
+function nextQuestion() {
+  clearInterval(pc.timer);
+  clearPartMarks();
+  pc.qi++; pc.tries = 0; pc.locked = false;
+  if (pc.qi >= pc.qs.length) return endPcQuiz();
+  const id = pc.qs[pc.qi], p = PARTS[id];
+  setView(p.view);
+  const q = pc.cfg.ask === 'name' ? `Clicca su: <b>${p.name}</b> ${p.emoji}` : `🕵️ ${p.clue}`;
+  const where = p.view === 'dentro' ? '🔧 Guarda dentro il case' : '🖥️ Guarda sulla scrivania';
+  $('pcSide').innerHTML = `
+    <div class="q-count">Domanda ${pc.qi + 1} di ${pc.qs.length} • ⭐ ${pc.score} punti</div>
+    ${pc.cfg.time ? '<div class="timer"><div id="qTimer"></div></div>' : ''}
+    <div class="question">${q}</div>
+    <p style="color:var(--muted)">${where}</p>
+    <div class="q-feedback" id="qFeedback"></div>`;
+  if (pc.cfg.time) {
+    pc.qStart = performance.now();
+    pc.timer = setInterval(() => {
+      const left = 1 - (performance.now() - pc.qStart) / 1000 / pc.cfg.time;
+      $('qTimer').style.width = Math.max(0, left * 100) + '%';
+      if (left <= 0) { clearInterval(pc.timer); revealAnswer('⏰ Tempo scaduto!'); }
+    }, 100);
+  }
+}
+function revealAnswer(msg) {
+  pc.locked = true;
+  const id = pc.qs[pc.qi];
+  partEl(id).classList.add('reveal');
+  const fb = $('qFeedback'); fb.className = 'q-feedback bad';
+  fb.innerHTML = `${msg} Era: <b>${PARTS[id].name}</b>`;
+  sfx.lose();
+  setTimeout(nextQuestion, 2000);
+}
+
+function onPartClick(id, el) {
+  if (current !== 'pc') return;
+  if (pc.mode === 'explore') {
+    if (!pc.found.has(id)) { pc.found.add(id); sfx.ok(); }
+    el.classList.add('found');
+    renderExplore(id);
+    if (pc.found.size === Object.keys(PARTS).length && !pc.allDone) {
+      pc.allDone = true; sfx.win();
+      setTimeout(() => showResult({
+        emoji: '🏅', title: 'Hai scoperto tutto!', sub: 'Ora conosci tutti i pezzi del computer. Pronto per il quiz?',
+        stars: 3, record: false, stats: [['🔍 Pezzi scoperti', Object.keys(PARTS).length], ['🧠 Livello', 'Esperto']],
+        actions: [['❓ Fai il quiz', startPcQuiz, true], ['🔍 Continua a esplorare', () => {}]],
+      }), 400);
+    }
+    return;
+  }
+  if (pc.locked) return;
+  const target = pc.qs[pc.qi];
+  const fb = $('qFeedback');
+  if (id === target) {
+    pc.locked = true; clearInterval(pc.timer);
+    let pts = pc.tries === 0 ? 100 : 50;
+    if (pc.cfg.time) pts += Math.max(0, Math.round((1 - (performance.now() - pc.qStart) / 1000 / pc.cfg.time) * 50));
+    pc.score += pts; if (pc.tries === 0) pc.correct++;
+    el.classList.add('right');
+    fb.className = 'q-feedback good';
+    fb.innerHTML = `✅ Giusto! <b>${PARTS[id].name}</b> +${pts}`;
+    sfx.level();
+    setTimeout(nextQuestion, 1300);
+  } else {
+    pc.tries++;
+    el.classList.remove('wrong'); void el.getBBox(); el.classList.add('wrong');
+    setTimeout(() => el.classList.remove('wrong'), 400);
+    if (pc.tries >= 2) return revealAnswer('❌ Non era quello.');
+    fb.className = 'q-feedback bad';
+    fb.innerHTML = `❌ Quello è: <b>${PARTS[id].name}</b>. Riprova!`;
+    sfx.miss();
+  }
+}
+
+function endPcQuiz() {
+  stopPc();
+  const tot = pc.qs.length, pct = pc.score / (tot * (pc.cfg.time ? 150 : 100));
+  const key = 'bestPc_' + difficulty;
+  const record = pc.score > store.get(key, 0);
+  if (record) store.set(key, pc.score);
+  const stars = pct >= 0.9 ? 3 : pct >= 0.6 ? 2 : 1;
+  sfx.win();
+  showResult({
+    emoji: stars === 3 ? '🏆' : stars === 2 ? '🎉' : '🖥️',
+    title: 'Quiz finito!',
+    sub: stars === 3 ? 'Sei un vero tecnico del computer!' : stars === 2 ? 'Molto bene, conosci quasi tutto!' : 'Prova a esplorare ancora e poi riprova il quiz.',
+    stars, record,
+    stats: [['⭐ Punti', pc.score], ['✅ Risposte giuste', pc.correct + ' / ' + tot]],
+    actions: [['↻ Rifai il quiz', startPcQuiz, true], ['🔍 Esplora', startPcExplore], ['🏠 Menu', goMenu]],
+  });
 }
 
 /* pausa automatica se si cambia finestra durante la pioggia o la corsa */
