@@ -85,13 +85,17 @@
   .diff button[aria-pressed="true"][data-d="difficile"] { background: var(--red); border-color: var(--red); color: #fff; }
   .diff-desc { color: var(--muted); font-size: 15px; text-align: center; min-height: 20px; }
 
-  .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  @media (max-width: 760px) { .modes { grid-template-columns: 1fr; } }
+  .modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 1000px) { .modes { grid-template-columns: 1fr; } }
   .mode h3 { margin: 0 0 6px; font-size: 26px; display: flex; align-items: center; gap: 10px; }
   .mode p { margin: 0 0 16px; color: var(--muted); }
   .mode .big-emoji { font-size: 34px; }
   .mode.race { border-top: 8px solid var(--orange); }
   .mode.rain { border-top: 8px solid var(--purple); }
+  .mode.dino { border-top: 8px solid var(--green); }
+  .mode.dino .rain-rules li { background: var(--green-soft); }
+  .play-btn.green { background: var(--green); box-shadow: 0 5px 0 #17824d; }
+  .play-btn.green:active { box-shadow: 0 2px 0 #17824d; }
 
   .texts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .text-btn {
@@ -218,6 +222,19 @@
   }
   @keyframes toast { 0% { scale: .4; opacity: 0; } 20% { scale: 1.1; opacity: 1; } 80% { opacity: 1; } 100% { opacity: 0; scale: 1; } }
 
+  /* ---------- corsa delle scorciatoie ---------- */
+  .runner { position: relative; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 10px; background: #bfe6ff; }
+  .runner canvas { display: block; width: 100%; height: 320px; }
+  .runner.hit { animation: flashRed .35s; }
+  .fb {
+    position: absolute; left: 70px; top: 90px; font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 26px;
+    pointer-events: none; animation: floatUp .9s forwards; white-space: nowrap;
+    text-shadow: 0 2px 0 rgba(255,255,255,.8);
+  }
+  .fb.good { color: var(--green); } .fb.bad { color: var(--red); } .fb.great { color: var(--orange); }
+  .dino-hint { text-align: center; color: var(--muted); font-weight: 700; margin: 0 0 14px; }
+  .dino-hint b { background: var(--yellow); color: var(--ink); border-radius: 6px; padding: 0 6px; }
+
   /* ---------- virtual keyboard ---------- */
   .keyboard { display: grid; gap: 6px; justify-content: center; user-select: none; }
   .krow { display: flex; gap: 6px; justify-content: center; }
@@ -312,6 +329,16 @@
         </ul>
         <button class="play-btn" id="playRain">Gioca! ▶</button>
       </div>
+      <div class="card mode dino">
+        <h3><span class="big-emoji">🤖</span> Corsa delle scorciatoie</h3>
+        <p>Bip il robottino corre e trova ostacoli sulla strada. Per saltarli devi premere la combinazione giusta, come <b>Ctrl + C</b>!</p>
+        <ul class="rain-rules">
+          <li>🟨 Premi la combinazione quando l'ostacolo entra nella zona gialla</li>
+          <li>🎯 Più aspetti, più punti: salto all'ultimo = Perfetto!</li>
+          <li>📚 Impari le scorciatoie vere: copia, incolla, salva…</li>
+        </ul>
+        <button class="play-btn green" id="playDino">Corri! ▶</button>
+      </div>
     </div>
 
     <div class="records" id="records"></div>
@@ -373,6 +400,26 @@
     <div class="sky" id="sky"><div class="ground"></div></div>
     <div class="kb-slot" id="rainKb"></div>
   </section>
+
+  <!-- ================= CORSA DELLE SCORCIATOIE ================= -->
+  <section class="screen" id="dino">
+    <div class="topbar">
+      <h2>🤖 Corsa delle scorciatoie <span class="pill" id="dinoPill"></span></h2>
+      <div style="display:flex; gap:8px">
+        <button class="btn" id="dinoRestart">↻ Ricomincia</button>
+        <button class="btn" id="dinoMenu">🏠 Menu</button>
+      </div>
+    </div>
+    <div class="rain-hud">
+      <div class="stat"><b id="dScore">0</b><span>⭐ Punti</span></div>
+      <div class="stat"><b id="dJumps">0</b><span>🦘 Salti</span></div>
+      <div class="stat"><b id="dDist">0 m</b><span>📏 Distanza</span></div>
+      <div class="stat"><b class="hearts" id="dLives"></b><span>Vite</span></div>
+    </div>
+    <div class="runner" id="runner"><canvas id="dinoCanvas"></canvas></div>
+    <p class="dino-hint">Tieni premuto <b>Ctrl</b> (o <b>Maiusc</b>) e poi premi la lettera, quando l'ostacolo è nella zona gialla!</p>
+    <div class="kb-slot" id="dinoKb"></div>
+  </section>
 </main>
 
 <!-- shared virtual keyboard (moved between screens) -->
@@ -403,11 +450,14 @@ const TEXTS = [
 
 const DIFF = {
   facile:    { label: 'Facile',    bot: 12, desc: 'Testi tutti in minuscolo, senza punteggiatura. Il robot va piano e le lettere cadono lente.',
-               rain: { chars: 'asdfghjklqwertyuiopzxcvbnm', speed: 45, spawn: 1800, max: 3 } },
+               rain: { chars: 'asdfghjklqwertyuiopzxcvbnm', speed: 45, spawn: 1800, max: 3 },
+               dino: { speed: 190, zone: 230, gap: [2.6, 3.6], pools: ['base'] } },
   medio:     { label: 'Medio',     bot: 22, desc: 'Testi completi di maiuscole e punteggiatura. Robot e lettere più veloci.',
-               rain: { chars: 'abcdefghijklmnopqrstuvwxyz', speed: 70, spawn: 1300, max: 5 } },
+               rain: { chars: 'abcdefghijklmnopqrstuvwxyz', speed: 70, spawn: 1300, max: 5 },
+               dino: { speed: 240, zone: 190, gap: [2.1, 3.0], pools: ['base', 'medio'] } },
   difficile: { label: 'Difficile', bot: 35, desc: 'Robot velocissimo! Nella pioggia arrivano anche maiuscole e numeri.',
-               rain: { chars: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', speed: 95, spawn: 950, max: 7 } },
+               rain: { chars: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', speed: 95, spawn: 950, max: 7 },
+               dino: { speed: 290, zone: 160, gap: [1.7, 2.5], pools: ['base', 'medio', 'difficile'] } },
 };
 
 /* ======================= UTILITÀ ======================= */
@@ -462,14 +512,15 @@ const ROWS = [
   ['q','w','e','r','t','y','u','i','o','p','è','+'],
   ['a','s','d','f','g','h','j','k','l','ò','à','ù'],
   ['ShiftL','<','z','x','c','v','b','n','m',',','.','-','ShiftR'],
-  [' '],
+  ['CtrlL','Alt',' ','AltGr','CtrlR'],
 ];
 const FINGERS = {
   'f-lp': '\\1qa<z', 'f-lr': '2wsx', 'f-lm': '3edc', 'f-li': '45rtfgvb',
   'f-ri': '67yuhjnm', 'f-rm': '8ik,', 'f-rr': '9ol.', 'f-rp': "0'ìpè+òàù-",
 };
 const SHIFTED = { '!': '1', '"': '2', '£': '3', '$': '4', '%': '5', '&': '6', '/': '7', '(': '8', ')': '9', '=': '0', '?': "'", '^': 'ì', 'é': 'è', '*': '+', 'ç': 'ò', '°': 'à', '§': 'ù', ';': ',', ':': '.', '_': '-', '>': '<' };
-const LABELS = { 'Backspace': '⌫', 'ShiftL': '⇧ Maiusc', 'ShiftR': '⇧ Maiusc', ' ': 'spazio' };
+const LABELS = { 'Backspace': '⌫', 'ShiftL': '⇧ Maiusc', 'ShiftR': '⇧ Maiusc', ' ': 'spazio', 'CtrlL': 'Ctrl', 'CtrlR': 'Ctrl', 'Alt': 'Alt', 'AltGr': 'Alt Gr' };
+const MOD_FINGER = { ShiftL: 'f-lp', CtrlL: 'f-lp', ShiftR: 'f-rp', CtrlR: 'f-rp', Backspace: 'f-rp', Alt: 'f-th', AltGr: 'f-th' };
 const keyEls = {};
 (function buildKeyboard() {
   const wrap = $('kbKeys');
@@ -483,7 +534,7 @@ const keyEls = {};
       if (k === ' ') el.classList.add('space', 'f-th');
       if (k === 'f' || k === 'j') el.classList.add('bump');
       for (const f in FINGERS) if (k.length === 1 && FINGERS[f].includes(k)) el.classList.add(f);
-      if (k.startsWith('Shift') || k === 'Backspace') el.classList.add(k === 'ShiftL' ? 'f-lp' : 'f-rp');
+      if (MOD_FINGER[k]) el.classList.add(MOD_FINGER[k]);
       keyEls[k] = el; r.appendChild(el);
     });
     wrap.appendChild(r);
@@ -507,6 +558,9 @@ function highlightKey(ch) {
 document.addEventListener('keydown', e => {
   let k = e.key;
   if (k === 'Shift') k = e.code === 'ShiftRight' ? 'ShiftR' : 'ShiftL';
+  else if (k === 'Control') k = e.code === 'ControlRight' ? 'CtrlR' : 'CtrlL';
+  else if (k === 'AltGraph') k = 'AltGr';
+  else if (e.ctrlKey && /^Key[A-Z]$/.test(e.code)) k = e.code.slice(3).toLowerCase();
   else if (k.length === 1) k = SHIFTED[k] || k.toLowerCase();
   const el = keyEls[k];
   if (el) { el.classList.add('pressed'); setTimeout(() => el.classList.remove('pressed'), 110); }
@@ -540,10 +594,11 @@ function renderRecords() {
   const d = DIFF[difficulty].label;
   $('records').innerHTML = `
     <div class="record"><b>${store.get('bestWpm_' + difficulty, 0)} ppm</b><span>🏆 Record gara (${d})</span></div>
-    <div class="record"><b>${store.get('bestRain_' + difficulty, 0)}</b><span>🏆 Record pioggia (${d})</span></div>`;
+    <div class="record"><b>${store.get('bestRain_' + difficulty, 0)}</b><span>🏆 Record pioggia (${d})</span></div>
+    <div class="record"><b>${store.get('bestDino_' + difficulty, 0)}</b><span>🏆 Record corsa (${d})</span></div>`;
 }
 function goMenu() {
-  stopRace(); stopRain(); hideResult();
+  stopRace(); stopRain(); stopDino(); hideResult();
   show('menu'); renderRecords();
 }
 $('goHome').onclick = goMenu;
@@ -924,11 +979,332 @@ function gameOver() {
   }, 500);
 }
 
-/* pausa automatica se si cambia finestra durante la pioggia */
+/* ======================= CORSA DELLE SCORCIATOIE ======================= */
+const SHORTCUTS = {
+  base: [
+    { k: 'c', ctrl: 1, m: 'Copia' }, { k: 'v', ctrl: 1, m: 'Incolla' }, { k: 'x', ctrl: 1, m: 'Taglia' },
+    { k: 'z', ctrl: 1, m: 'Annulla' }, { k: 'a', ctrl: 1, m: 'Seleziona tutto' },
+  ],
+  medio: [
+    { k: 's', ctrl: 1, m: 'Salva' }, { k: 'f', ctrl: 1, m: 'Cerca' }, { k: 'p', ctrl: 1, m: 'Stampa' },
+    { k: 'b', ctrl: 1, m: 'Grassetto' }, { k: 'i', ctrl: 1, m: 'Corsivo' }, { k: 'u', ctrl: 1, m: 'Sottolineato' },
+    { k: 'y', ctrl: 1, m: 'Ripeti' },
+  ],
+  difficile: [
+    { k: 'z', ctrl: 1, shift: 1, m: 'Ripeti' }, { k: 's', ctrl: 1, shift: 1, m: 'Salva con nome' },
+    { k: 'e', shift: 1, m: 'E maiuscola' }, { k: 'm', shift: 1, m: 'M maiuscola' },
+    { sym: '!', m: 'Punto esclamativo' }, { sym: '?', m: 'Punto interrogativo' },
+  ],
+};
+function comboLabel(c) {
+  const parts = [];
+  if (c.ctrl) parts.push('Ctrl');
+  if (c.shift || c.sym) parts.push('Maiusc');
+  parts.push((c.sym ? SHIFTED[c.sym] : c.k).toUpperCase());
+  return parts.join(' + ');
+}
+function comboMatches(c, e) {
+  if (c.sym) return e.key === c.sym && !e.ctrlKey;
+  const letter = /^Key[A-Z]$/.test(e.code) ? e.code.slice(3).toLowerCase() : e.key.toLowerCase();
+  return !!c.ctrl === e.ctrlKey && !!c.shift === e.shiftKey && !e.altKey && letter === c.k;
+}
+function highlightCombo(c) {
+  highlightKey(c ? (c.sym || c.k) : null);
+  if (!c) return;
+  if (c.ctrl) keyEls.CtrlL.classList.add('target');
+  if (c.shift && !c.sym) keyEls[keyEls.ShiftR.classList.contains('target') ? 'ShiftR' : 'ShiftL'].classList.add('target');
+}
+
+const canvas = $('dinoCanvas'), ctx = canvas.getContext('2d');
+const dino = { running: false, raf: 0 };
+const BIP = { x: 70, w: 44, h: 62 };
+const GROUND = 52; // altezza del prato dal fondo
+const OBSTACLES = ['crate', 'cone', 'books'];
+
+function sizeCanvas() {
+  const dpr = window.devicePixelRatio || 1;
+  dino.W = canvas.clientWidth || 800; dino.H = canvas.clientHeight || 320;
+  canvas.width = dino.W * dpr; canvas.height = dino.H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener('resize', () => { if (current === 'dino') { sizeCanvas(); drawDino(); } });
+
+function startDino() {
+  stopDino(); hideResult();
+  const cfg = DIFF[difficulty].dino;
+  Object.assign(dino, {
+    obs: [], clouds: [], speed: cfg.speed, zone: cfg.zone, gap: cfg.gap,
+    pool: cfg.pools.flatMap(p => SHORTCUTS[p]),
+    dist: 0, score: 0, lives: 3, jumps: 0, perfect: 0, streak: 0, bestStreak: 0, wrong: 0,
+    spawnIn: 1.2, jumpT: 0, jumpDur: 0, hitT: 0, t: 0, running: false,
+  });
+  for (let i = 0; i < 5; i++) dino.clouds.push({ x: Math.random() * 1200, y: 20 + Math.random() * 90, s: 0.6 + Math.random() * 0.6 });
+  $('dinoPill').textContent = DIFF[difficulty].label;
+  $('dinoPill').className = 'pill ' + difficulty;
+  mountKeyboard('dinoKb');
+  show('dino');
+  sizeCanvas();
+  spawnObstacle(dino.W * 0.75);
+  renderDinoHud(); drawDino(); highlightCombo(nextObstacle()?.combo);
+  countdown(() => {
+    dino.running = true; dino.last = performance.now();
+    dino.raf = requestAnimationFrame(dinoLoop);
+  });
+}
+function stopDino() { dino.running = false; dino.paused = false; cancelAnimationFrame(dino.raf); cancelCountdown(); }
+$('playDino').onclick = startDino;
+$('dinoRestart').onclick = startDino;
+$('dinoMenu').onclick = goMenu;
+
+function spawnObstacle(x) {
+  const last = dino.obs[dino.obs.length - 1];
+  let combo;
+  do { combo = dino.pool[Math.floor(Math.random() * dino.pool.length)]; } while (dino.pool.length > 1 && last && combo === last.combo);
+  const type = OBSTACLES[Math.floor(Math.random() * OBSTACLES.length)];
+  const size = { crate: [44, 44], cone: [36, 50], books: [50, 40] }[type];
+  dino.obs.push({ x: x ?? dino.W + 20, w: size[0], h: size[1], type, combo, state: 'wait' });
+}
+function nextObstacle() { return dino.obs.find(o => o.state === 'wait' && o.x + o.w > BIP.x); }
+function gapToBip(o) { return o.x - (BIP.x + BIP.w); }
+
+function dinoLoop(now) {
+  if (!dino.running) return;
+  const dt = Math.min(0.05, (now - dino.last) / 1000);
+  dino.last = now;
+  stepDino(dt);
+  if (dino.running) dino.raf = requestAnimationFrame(dinoLoop);
+}
+function stepDino(dt) {
+  dino.t += dt;
+  dino.dist += dino.speed * dt;
+  if (dino.jumpT > 0) dino.jumpT = Math.max(0, dino.jumpT - dt);
+  if (dino.hitT > 0) dino.hitT = Math.max(0, dino.hitT - dt);
+  dino.clouds.forEach(c => { c.x -= dino.speed * 0.15 * c.s * dt; if (c.x < -120) { c.x = dino.W + 60; c.y = 20 + Math.random() * 90; } });
+
+  dino.spawnIn -= dt;
+  if (dino.spawnIn <= 0) {
+    spawnObstacle();
+    dino.spawnIn = dino.gap[0] + Math.random() * (dino.gap[1] - dino.gap[0]);
+  }
+  for (const o of dino.obs) {
+    o.x -= dino.speed * dt;
+    if (o.state === 'wait' && o.x <= BIP.x + BIP.w - 6) crash(o);
+  }
+  dino.obs = dino.obs.filter(o => o.x + o.w > -40);
+  if (!dino.running) return;
+  highlightCombo(nextObstacle()?.combo);
+  renderDinoHud();
+  drawDino();
+}
+
+function feedback(text, cls) {
+  const f = document.createElement('div');
+  f.className = 'fb ' + cls; f.textContent = text;
+  $('runner').appendChild(f); setTimeout(() => f.remove(), 900);
+}
+function crash(o) {
+  o.state = 'hit';
+  dino.lives--; dino.streak = 0; dino.hitT = 0.6;
+  const r = $('runner'); r.classList.remove('hit'); void r.offsetWidth; r.classList.add('hit');
+  feedback('Ahi! Era ' + comboLabel(o.combo), 'bad');
+  sfx.lose();
+  if (dino.lives <= 0) endDino();
+}
+function jumpOver(o) {
+  const gap = gapToBip(o);
+  o.state = 'ok';
+  dino.jumps++; dino.streak++;
+  dino.bestStreak = Math.max(dino.bestStreak, dino.streak);
+  // il salto dura quanto basta per superare l'ostacolo
+  dino.jumpDur = Math.min(1.1, Math.max(0.45, (gap + BIP.w + o.w + 30) / dino.speed));
+  dino.jumpT = dino.jumpDur;
+  const perfect = gap < dino.zone * 0.45;
+  if (perfect) dino.perfect++;
+  const pts = (perfect ? 100 : 50) + Math.min(dino.streak, 10) * 5;
+  dino.score += pts;
+  feedback((perfect ? 'Perfetto! ' : 'Bene! ') + '+' + pts, perfect ? 'great' : 'good');
+  perfect ? sfx.level() : sfx.ok();
+  if (dino.jumps % 6 === 0) {
+    dino.speed *= 1.07;
+    const t = document.createElement('div'); t.className = 'toast'; t.textContent = 'Più veloce! 🚀';
+    $('runner').appendChild(t); setTimeout(() => t.remove(), 1300);
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (current !== 'dino') return;
+  if (e.key === 'Escape') { goMenu(); return; }
+  // blocca le scorciatoie del browser (copia, salva, stampa…) mentre si gioca
+  if (e.ctrlKey) e.preventDefault();
+  if (!dino.running || ['Control', 'Shift', 'Alt', 'AltGraph', 'Meta', 'CapsLock', 'Tab'].includes(e.key)) return;
+  e.preventDefault();
+  if (e.repeat) return;
+  const o = nextObstacle();
+  if (!o) return;
+  if (!comboMatches(o.combo, e)) {
+    dino.streak = 0; dino.wrong++;
+    feedback('Ops! Serve ' + comboLabel(o.combo), 'bad'); sfx.miss();
+    return;
+  }
+  if (gapToBip(o) > dino.zone) { dino.streak = 0; feedback('Troppo presto! Aspetta il giallo', 'bad'); sfx.miss(); return; }
+  jumpOver(o);
+});
+
+function renderDinoHud() {
+  $('dScore').textContent = dino.score + Math.floor(dino.dist / 20);
+  $('dJumps').textContent = dino.jumps;
+  $('dDist').textContent = Math.floor(dino.dist / 40) + ' m';
+  $('dLives').textContent = '❤️'.repeat(Math.max(0, dino.lives)) + '🤍'.repeat(Math.max(0, 3 - dino.lives));
+}
+
+/* ---------- disegno ---------- */
+function drawDino() {
+  const { W, H } = dino, gy = H - GROUND;
+  const sky = ctx.createLinearGradient(0, 0, 0, gy);
+  sky.addColorStop(0, '#8fd3ff'); sky.addColorStop(1, '#dff3ff');
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, W, gy);
+  // sole e nuvole
+  ctx.fillStyle = '#ffd84d'; ctx.beginPath(); ctx.arc(W - 70, 55, 28, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#fff';
+  dino.clouds.forEach(c => {
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, 18 * c.s + 6, 0, Math.PI * 2);
+    ctx.arc(c.x + 22 * c.s, c.y - 8, 22 * c.s + 6, 0, Math.PI * 2);
+    ctx.arc(c.x + 46 * c.s, c.y, 16 * c.s + 6, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  // colline lontane
+  ctx.fillStyle = '#9ad99f';
+  for (let i = -1; i < W / 260 + 2; i++) {
+    const x = i * 260 - (dino.dist * 0.3) % 260;
+    ctx.beginPath(); ctx.ellipse(x + 130, gy, 150, 60, 0, Math.PI, 0); ctx.fill();
+  }
+  // strada
+  ctx.fillStyle = '#4bb86e'; ctx.fillRect(0, gy, W, GROUND);
+  ctx.fillStyle = '#3ca35e';
+  for (let x = -(dino.dist % 40); x < W; x += 40) ctx.fillRect(x, gy + 10, 20, 6);
+  // zona gialla di salto
+  const z0 = BIP.x + BIP.w;
+  ctx.fillStyle = 'rgba(255, 201, 60, .35)'; ctx.fillRect(z0, gy - 4, dino.zone, 8);
+  ctx.fillStyle = '#ffc93c'; ctx.fillRect(z0, gy - 2, dino.zone, 4);
+
+  dino.obs.forEach(o => drawObstacle(o, gy));
+  drawBip(gy);
+}
+
+function rr(x, y, w, h, r, color) { ctx.fillStyle = color; ctx.beginPath(); ctx.roundRect(x, y, w, h, r); ctx.fill(); }
+
+function drawObstacle(o, gy) {
+  const x = o.x, y = gy - o.h;
+  ctx.save();
+  if (o.state === 'hit') ctx.globalAlpha = 0.45;
+  if (o.type === 'crate') {
+    rr(x, y, o.w, o.h, 4, '#b7793f');
+    ctx.strokeStyle = '#8a5527'; ctx.lineWidth = 4;
+    ctx.strokeRect(x + 4, y + 4, o.w - 8, o.h - 8);
+    ctx.beginPath(); ctx.moveTo(x + 6, y + 6); ctx.lineTo(x + o.w - 6, y + o.h - 6); ctx.stroke();
+  } else if (o.type === 'cone') {
+    ctx.fillStyle = '#ff7a2f';
+    ctx.beginPath(); ctx.moveTo(x + o.w / 2, y); ctx.lineTo(x + o.w, gy - 6); ctx.lineTo(x, gy - 6); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.fillRect(x + 10, y + 24, o.w - 20, 7);
+    rr(x - 4, gy - 8, o.w + 8, 8, 2, '#e05a14');
+  } else {
+    ['#e5484d', '#3d7bff', '#8b5cf6'].forEach((c, i) => rr(x + (i % 2) * 4, y + i * 13, o.w - 4, 12, 3, c));
+    ctx.fillStyle = 'rgba(255,255,255,.7)';
+    for (let i = 0; i < 3; i++) ctx.fillRect(x + (i % 2) * 4 + 6, y + i * 13 + 4, o.w - 16, 3);
+  }
+  ctx.restore();
+
+  // fumetto con la combinazione
+  if (o.state === 'hit' || o.x > dino.W) return;
+  const inZone = o.state === 'wait' && gapToBip(o) <= dino.zone;
+  const label = comboLabel(o.combo);
+  ctx.font = "700 20px Fredoka, Nunito, sans-serif";
+  const lw = ctx.measureText(label).width;
+  ctx.font = "700 13px Nunito, sans-serif";
+  const mw = ctx.measureText(o.combo.m).width;
+  const bw = Math.max(lw, mw) + 24, bh = 50;
+  const bx = x + o.w / 2 - bw / 2, by = y - bh - 16;
+  const bg = o.state === 'ok' ? '#dcf5e8' : inZone ? '#ffc93c' : '#ffffff';
+  ctx.save();
+  if (inZone) { ctx.shadowColor = 'rgba(255,170,0,.8)'; ctx.shadowBlur = 16; }
+  rr(bx, by, bw, bh, 12, bg);
+  ctx.restore();
+  ctx.fillStyle = bg;
+  ctx.beginPath(); ctx.moveTo(x + o.w / 2 - 8, by + bh); ctx.lineTo(x + o.w / 2 + 8, by + bh); ctx.lineTo(x + o.w / 2, by + bh + 10); ctx.fill();
+  ctx.textAlign = 'center';
+  ctx.fillStyle = o.state === 'ok' ? '#22a765' : '#1f2a44';
+  ctx.font = "700 20px Fredoka, Nunito, sans-serif";
+  ctx.fillText(o.state === 'ok' ? '✓ ' + label : label, x + o.w / 2, by + 23);
+  ctx.fillStyle = '#6b7489';
+  ctx.font = "700 13px Nunito, sans-serif";
+  ctx.fillText(o.combo.m, x + o.w / 2, by + 41);
+  ctx.textAlign = 'left';
+}
+
+function drawBip(gy) {
+  const p = dino.jumpDur ? 1 - dino.jumpT / dino.jumpDur : 1;
+  const lift = dino.jumpT > 0 ? Math.sin(Math.PI * p) * 95 : 0;
+  const x = BIP.x, foot = gy - lift;
+  const hurt = dino.hitT > 0;
+  // ombra
+  ctx.fillStyle = 'rgba(0,0,0,.15)';
+  ctx.beginPath(); ctx.ellipse(x + BIP.w / 2, gy + 2, 22 - lift / 8, 5, 0, 0, Math.PI * 2); ctx.fill();
+  if (hurt && Math.floor(dino.t * 12) % 2) return; // lampeggia quando sbatte
+  // gambe
+  const step = dino.running && lift === 0 ? Math.sin(dino.t * 22) * 5 : 0;
+  rr(x + 9, foot - 14, 9, 14 + step, 4, '#2c3e66');
+  rr(x + 26, foot - 14, 9, 14 - step, 4, '#2c3e66');
+  // corpo
+  rr(x, foot - 54, BIP.w, 42, 12, '#3d7bff');
+  rr(x + 6, foot - 48, 32, 22, 7, '#d6ecff');
+  // occhi
+  ctx.fillStyle = '#1f2a44';
+  if (hurt) {
+    ctx.font = "700 14px Nunito, sans-serif"; ctx.fillText('x  x', x + 10, foot - 32);
+  } else {
+    ctx.beginPath(); ctx.arc(x + 16, foot - 38, 3.5, 0, Math.PI * 2); ctx.arc(x + 28, foot - 38, 3.5, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#1f2a44'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(x + 22, foot - 34, 5, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke();
+  }
+  // braccio e antenna
+  rr(x + BIP.w - 4, foot - 36, 10, 6, 3, '#2c5fd6');
+  ctx.strokeStyle = '#2c3e66'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(x + 22, foot - 54); ctx.lineTo(x + 22, foot - 64); ctx.stroke();
+  ctx.fillStyle = '#ff6b3d'; ctx.beginPath(); ctx.arc(x + 22, foot - 66, 5, 0, Math.PI * 2); ctx.fill();
+}
+
+function endDino() {
+  dino.running = false; cancelAnimationFrame(dino.raf);
+  highlightCombo(null);
+  drawDino();
+  const score = dino.score + Math.floor(dino.dist / 20);
+  const key = 'bestDino_' + difficulty;
+  const record = score > store.get(key, 0);
+  if (record) store.set(key, score);
+  const stars = dino.jumps >= 25 ? 3 : dino.jumps >= 10 ? 2 : 1;
+  setTimeout(() => {
+    sfx.win();
+    showResult({
+      emoji: stars === 3 ? '🏆' : stars === 2 ? '🎉' : '🤖',
+      title: 'Bip si è fermato!',
+      sub: stars === 3 ? 'Sei un mago delle scorciatoie!' : stars === 2 ? 'Gran corsa, le scorciatoie le sai!' : 'Bel tentativo! Guarda il fumetto e aspetta il giallo.',
+      stars, record,
+      stats: [['⭐ Punti', score], ['🦘 Salti', dino.jumps], ['🎯 Salti perfetti', dino.perfect], ['🔥 Salti di fila', dino.bestStreak], ['📏 Distanza', Math.floor(dino.dist / 40) + ' m'], ['❌ Tasti sbagliati', dino.wrong]],
+      actions: [['↻ Corri ancora', startDino, true], ['🏠 Menu', goMenu]],
+    });
+  }, 600);
+}
+
+/* pausa automatica se si cambia finestra durante la pioggia o la corsa */
 document.addEventListener('visibilitychange', () => {
   if (document.hidden && rain.running) { rain.running = false; cancelAnimationFrame(rain.raf); rain.paused = true; }
   else if (!document.hidden && rain.paused && current === 'rain') {
     rain.paused = false; rain.running = true; rain.last = performance.now(); rain.raf = requestAnimationFrame(rainLoop);
+  }
+  if (document.hidden && dino.running) { dino.running = false; cancelAnimationFrame(dino.raf); dino.paused = true; }
+  else if (!document.hidden && dino.paused && current === 'dino') {
+    dino.paused = false; dino.running = true; dino.last = performance.now(); dino.raf = requestAnimationFrame(dinoLoop);
   }
 });
 
