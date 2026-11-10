@@ -451,13 +451,13 @@ const TEXTS = [
 const DIFF = {
   facile:    { label: 'Facile',    bot: 12, desc: 'Testi tutti in minuscolo, senza punteggiatura. Il robot va piano e le lettere cadono lente.',
                rain: { chars: 'asdfghjklqwertyuiopzxcvbnm', speed: 45, spawn: 1800, max: 3 },
-               dino: { speed: 190, zone: 230, gap: [2.6, 3.6], pools: ['base'] } },
+               dino: { speed: 140, zone: 230, gap: [2.6, 3.6], pools: ['base'] } },
   medio:     { label: 'Medio',     bot: 22, desc: 'Testi completi di maiuscole e punteggiatura. Robot e lettere più veloci.',
                rain: { chars: 'abcdefghijklmnopqrstuvwxyz', speed: 70, spawn: 1300, max: 5 },
-               dino: { speed: 240, zone: 190, gap: [2.1, 3.0], pools: ['base', 'medio'] } },
+               dino: { speed: 180, zone: 190, gap: [2.1, 3.0], pools: ['base', 'medio'] } },
   difficile: { label: 'Difficile', bot: 35, desc: 'Robot velocissimo! Nella pioggia arrivano anche maiuscole e numeri.',
                rain: { chars: 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', speed: 95, spawn: 950, max: 7 },
-               dino: { speed: 290, zone: 160, gap: [1.7, 2.5], pools: ['base', 'medio', 'difficile'] } },
+               dino: { speed: 220, zone: 160, gap: [1.7, 2.5], pools: ['base', 'medio', 'difficile'] } },
 };
 
 /* ======================= UTILITÀ ======================= */
@@ -1125,7 +1125,7 @@ function jumpOver(o) {
   feedback((perfect ? 'Perfetto! ' : 'Bene! ') + '+' + pts, perfect ? 'great' : 'good');
   perfect ? sfx.level() : sfx.ok();
   if (dino.jumps % 6 === 0) {
-    dino.speed *= 1.07;
+    dino.speed *= 1.05;
     const t = document.createElement('div'); t.className = 'toast'; t.textContent = 'Più veloce! 🚀';
     $('runner').appendChild(t); setTimeout(() => t.remove(), 1300);
   }
