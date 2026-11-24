@@ -325,6 +325,115 @@
   .r-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
   .r-actions .btn { font-size: 17px; padding: 10px 18px; }
   .hint { text-align: center; color: var(--muted); font-size: 14px; margin-top: 10px; }
+
+  /* ---------- il grande quiz del computer ---------- */
+  .mode.quiz { border-top: 8px solid var(--yellow); grid-column: 1 / -1; }
+  .mode.quiz .rain-rules { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 700px) { .mode.quiz .rain-rules { grid-template-columns: 1fr; } }
+  .mode.quiz .rain-rules li { background: #fff3cc; }
+  .play-btn.yellow { background: var(--yellow); color: var(--ink); box-shadow: 0 5px 0 #d9a514; }
+  .play-btn.yellow:active { box-shadow: 0 2px 0 #d9a514; }
+  .play-btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
+  .map-head { display: flex; gap: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 18px; font-size: 17px; }
+  .map-head > div:first-child { flex: 1 1 420px; }
+  #mapStars { flex: 0 1 240px; font-family: 'Fredoka', sans-serif; font-size: 20px; }
+  .tappe { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 860px) { .tappe { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .tappe { grid-template-columns: 1fr; } }
+  .tappa { display: block; width: 100%; text-align: center; color: var(--ink); transition: transform .1s; }
+  .tappa:hover { transform: translateY(-3px); }
+  .tappa.next { border-color: var(--yellow); box-shadow: 0 0 0 4px #ffe58a, var(--shadow); }
+  .tappa.done { background: #fbfff8; }
+  .tappa .t-num { color: var(--muted); font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+  .tappa .t-emoji { font-size: 46px; line-height: 1.2; }
+  .tappa h3 { margin: 4px 0 6px; font-size: 21px; }
+  .tappa p { margin: 0 0 10px; color: var(--muted); font-size: 15px; }
+  .tappa .t-stars { font-size: 24px; letter-spacing: 3px; }
+  .tappa .t-stars .off { filter: grayscale(1); opacity: .3; }
+  .tappa .t-go { margin-top: 8px; font-weight: 800; color: var(--blue); }
+
+  .quiz-bar { margin: 0 0 14px; height: 14px; }
+  .quiz-bar div { background: var(--yellow); }
+  .quiz-card { padding: 24px 26px; margin-bottom: 14px; }
+  .q-type { display: inline-block; color: #fff; border-radius: 999px; padding: 5px 14px; font-weight: 800; font-size: 15px; }
+  .q-row { display: flex; gap: 16px; align-items: center; margin: 14px 0; }
+  .q-emoji { font-size: 58px; line-height: 1; flex: none; }
+  .q-text { font-family: 'Fredoka', sans-serif; font-size: 27px; line-height: 1.35; }
+  .q-clue { display: block; font-family: 'Nunito', sans-serif; font-size: 18px; color: var(--muted); margin-top: 6px; }
+  .q-help { color: var(--muted); font-weight: 700; margin: 10px 0 12px; }
+  .blank { display: inline-block; min-width: 110px; border-bottom: 4px solid var(--orange); color: var(--orange); text-align: center; padding: 0 6px; }
+  .slots { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
+  .slot {
+    width: 42px; height: 50px; border-radius: 10px; border: 2px dashed #d5c8ae; background: #fffaf1;
+    display: grid; place-items: center; font-family: 'Fredoka', sans-serif; font-size: 26px; font-weight: 700; text-transform: uppercase;
+  }
+  .slot.gap { width: 16px; border: none; background: none; }
+  .slot.hint { color: #b3a68b; }
+  .slot.typed { border-style: solid; border-color: var(--blue); background: #fff; }
+  .slot.ok { border-color: var(--green); background: var(--green-soft); color: var(--green); }
+  .slot.bad { border-color: var(--red); background: var(--red-soft); color: var(--red); }
+  .tiles { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 16px; }
+  .tile {
+    width: 52px; height: 58px; border-radius: 12px; background: var(--purple); color: #fff; display: grid; place-items: center;
+    font-family: 'Fredoka', sans-serif; font-size: 30px; font-weight: 700; box-shadow: 0 4px 0 #6a3fd4;
+  }
+  .io-help { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 14px; }
+  .io-help span { background: #eef3ff; border-radius: 999px; padding: 6px 14px; font-weight: 700; }
+  .opts { display: grid; gap: 10px; }
+  .opts.two { grid-template-columns: 1fr 1fr; }
+  .opt {
+    display: flex; gap: 12px; align-items: center; text-align: left; border: 3px solid var(--line); background: #fff;
+    border-radius: 14px; padding: 12px 16px; font-weight: 800; font-size: 19px; color: var(--ink); transition: transform .1s;
+  }
+  .opt:hover:not(:disabled) { transform: translateY(-2px); border-color: var(--blue); }
+  .opt:disabled { cursor: default; }
+  .opt .k { flex: none; width: 38px; height: 38px; border-radius: 10px; background: var(--ink); color: #fff; display: grid; place-items: center; font-family: 'Fredoka', sans-serif; font-size: 20px; }
+  .opt.right { border-color: var(--green); background: var(--green-soft); }
+  .opt.right .k { background: var(--green); }
+  .opt.wrong { border-color: var(--red); background: var(--red-soft); animation: shake .3s; }
+  .opt.wrong .k { background: var(--red); }
+  .q-actions { display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; }
+  .q-actions .type-input { flex: 1 1 260px; margin: 0; }
+  .q-actions .btn { font-size: 16px; }
+  .q-actions .btn:disabled { opacity: .5; cursor: default; }
+  #qzFb .q-feedback { margin-top: 12px; }
+  .copy-text { font-size: 28px; line-height: 1.7; background: #fffaf1; border-radius: 14px; padding: 14px 20px; margin-bottom: 14px; user-select: none; }
+  .fb-box { margin-top: 14px; border-radius: 14px; padding: 14px 18px; font-size: 18px; animation: fadeIn .25s; }
+  .fb-box.good { background: var(--green-soft); }
+  .fb-box.bad { background: var(--red-soft); }
+  .fb-box.learn { background: #fff3cc; }
+  .fb-title { font-family: 'Fredoka', sans-serif; font-size: 24px; margin-bottom: 4px; }
+  .fb-title .pts { color: var(--orange); }
+  .fb-why { margin-top: 6px; }
+  .fb-box .btn { margin-top: 12px; font-size: 17px; }
+  @media (max-width: 760px) {
+    .q-text { font-size: 21px; } .q-emoji { font-size: 42px; }
+    .slot { width: 30px; height: 40px; font-size: 20px; }
+    .copy-text { font-size: 21px; }
+    .opts.two { grid-template-columns: 1fr; }
+  }
+
+  .name-card { max-width: 560px; margin: 0 auto; text-align: center; }
+  .name-card h2 { margin: 8px 0; }
+  .name-card .type-input { text-align: center; margin-top: 8px; }
+  .diploma {
+    max-width: 780px; margin: 0 auto; text-align: center; background: #fffdf6; border: 10px double var(--yellow);
+    border-radius: 22px; padding: 34px 40px; box-shadow: var(--shadow); font-size: 18px; line-height: 1.5;
+  }
+  .d-medal { font-size: 64px; line-height: 1; }
+  .d-over { font-family: 'Fredoka', sans-serif; color: var(--muted); font-size: 22px; margin-top: 6px; }
+  .d-title { font-size: 42px; margin: 0 0 10px; color: var(--ink); }
+  .d-name { font-family: 'Fredoka', sans-serif; font-size: 44px; color: var(--orange); border-bottom: 3px dashed var(--line); display: inline-block; padding: 0 24px; margin-bottom: 10px; }
+  .d-stars { font-family: 'Fredoka', sans-serif; font-size: 24px; margin: 10px 0; }
+  .d-foot { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-top: 22px; color: var(--muted); font-weight: 700; }
+  .d-actions { display: flex; gap: 10px; justify-content: center; margin-top: 18px; }
+  .d-actions .btn { font-size: 17px; padding: 10px 18px; }
+  @media print {
+    body { background: #fff !important; }
+    header, .topbar, .d-actions, .overlay, .screen:not(#diploma) { display: none !important; }
+    .diploma { box-shadow: none; }
+  }
 </style>
 </head>
 <body>
@@ -356,6 +465,17 @@
     </div>
 
     <div class="modes">
+      <div class="card mode quiz">
+        <h3><span class="big-emoji">🧩</span> Il grande quiz del computer</h3>
+        <p>Un'avventura in 6 tappe (circa un'ora) su tutto quello che abbiamo imparato sui pezzi del computer. Rispondi scrivendo con la tastiera!</p>
+        <ul class="rain-rules">
+          <li>✍️ Scrivi i nomi dei pezzi e completa le frasi</li>
+          <li>📝 Ricopia le frasi d'oro senza errori</li>
+          <li>🔀 Lettere mescolate, vero o falso, input o output…</li>
+          <li>🎓 Finisci tutte le tappe e ritira il diploma!</li>
+        </ul>
+        <button class="play-btn yellow" id="playQuiz">🗺️ Inizia l'avventura</button>
+      </div>
       <div class="card mode race">
         <h3><span class="big-emoji">🏎️</span> Gara di scrittura</h3>
         <p>Riscrivi la curiosità più veloce che puoi e batti il robot! Ogni parola giusta fa avanzare la tua macchina.</p>
@@ -597,6 +717,64 @@
       <div class="card side" id="pcSide"></div>
     </div>
   </section>
+
+  <!-- ================= GRANDE QUIZ: MAPPA ================= -->
+  <section class="screen" id="quizMap">
+    <div class="topbar">
+      <h2>🧩 Il grande quiz del computer</h2>
+      <div style="display:flex; gap:8px">
+        <button class="btn" id="quizMapMenu">🏠 Menu</button>
+      </div>
+    </div>
+    <div class="card map-head">
+      <div><b>Un'avventura in 6 tappe</b>, circa 10 minuti ciascuna. Rispondi scrivendo con la tastiera, scegli le risposte giuste e ricopia le frasi d'oro. Alla fine ti aspetta il diploma! 🎓</div>
+      <div id="mapStars"></div>
+    </div>
+    <div class="tappe" id="tappeList"></div>
+    <div style="text-align:center; margin-top:20px">
+      <button class="play-btn yellow" id="dipBtn" style="max-width:520px">🎓 Ritira il diploma</button>
+    </div>
+  </section>
+
+  <!-- ================= GRANDE QUIZ: DOMANDE ================= -->
+  <section class="screen" id="quiz">
+    <div class="topbar">
+      <h2><span id="quizTitle"></span> <span class="pill" id="quizPill"></span></h2>
+      <div style="display:flex; gap:8px">
+        <button class="btn" id="quizToMap">🗺️ Mappa</button>
+        <button class="btn" id="quizMenu">🏠 Menu</button>
+      </div>
+    </div>
+    <div class="rain-hud">
+      <div class="stat"><b id="qzPos">1 / 16</b><span>📍 Domanda</span></div>
+      <div class="stat"><b id="qzScore">0</b><span>⭐ Punti</span></div>
+      <div class="stat"><b id="qzStreak">0</b><span>🔥 Giuste di fila</span></div>
+      <div class="stat"><b id="qzChars">0</b><span>✍️ Lettere scritte</span></div>
+    </div>
+    <div class="found-bar quiz-bar"><div id="qzBar"></div></div>
+    <div class="card quiz-card" id="qzCard">
+      <div id="qzBody"></div>
+      <div class="q-actions" id="qzActions">
+        <input class="type-input" id="qzInput" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <button class="btn" id="qzHint">💡 Aiutino (Tab)</button>
+        <button class="btn primary" id="qzOk">Conferma ⏎</button>
+      </div>
+      <div id="qzFb"></div>
+    </div>
+    <div class="kb-slot" id="quizKb"></div>
+  </section>
+
+  <!-- ================= GRANDE QUIZ: DIPLOMA ================= -->
+  <section class="screen" id="diploma">
+    <div class="topbar">
+      <h2>🎓 Il tuo diploma</h2>
+      <div style="display:flex; gap:8px">
+        <button class="btn" id="dipMap">🗺️ Mappa</button>
+        <button class="btn" id="dipMenu">🏠 Menu</button>
+      </div>
+    </div>
+    <div id="dipBody"></div>
+  </section>
 </main>
 
 <!-- shared virtual keyboard (moved between screens) -->
@@ -773,10 +951,11 @@ function renderRecords() {
     <div class="record"><b>${store.get('bestWpm_' + difficulty, 0)} ppm</b><span>🏆 Record gara (${d})</span></div>
     <div class="record"><b>${store.get('bestRain_' + difficulty, 0)}</b><span>🏆 Record pioggia (${d})</span></div>
     <div class="record"><b>${store.get('bestDino_' + difficulty, 0)}</b><span>🏆 Record corsa (${d})</span></div>
-    <div class="record"><b>${store.get('bestPc_' + difficulty, 0)}</b><span>🏆 Record quiz PC (${d})</span></div>`;
+    <div class="record"><b>${store.get('bestPc_' + difficulty, 0)}</b><span>🏆 Record quiz PC (${d})</span></div>
+    <div class="record"><b>${quizStars().reduce((a, b) => a + b, 0)} / ${TAPPE.length * 3} ⭐</b><span>🧩 Stelle grande quiz</span></div>`;
 }
 function goMenu() {
-  stopRace(); stopRain(); stopDino(); stopPc(); hideResult();
+  stopRace(); stopRain(); stopDino(); stopPc(); stopQuiz(); hideResult();
   show('menu'); renderRecords();
 }
 $('goHome').onclick = goMenu;
@@ -805,7 +984,7 @@ function countdown(done) {
 function cancelCountdown() { clearInterval(countTimer); $('countOverlay').classList.remove('show'); }
 
 /* ---------- risultati ---------- */
-function showResult({ emoji, title, sub, stars, stats, record, actions }) {
+function showResult({ emoji, title, sub, stars, stats, record, actions, hint }) {
   const card = $('resultCard');
   card.innerHTML = `
     <div class="r-emoji">${emoji}</div>
@@ -815,7 +994,7 @@ function showResult({ emoji, title, sub, stars, stats, record, actions }) {
     ${record ? '<div class="newrec">🏆 Nuovo record!</div>' : ''}
     <div class="r-stats">${stats.map(([l, v]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('')}</div>
     <div class="r-actions"></div>
-    <div class="hint">Premi Invio per riprovare</div>`;
+    <div class="hint">${hint || 'Premi Invio per riprovare'}</div>`;
   const acts = card.querySelector('.r-actions');
   actions.forEach(([label, fn, primary]) => {
     const b = document.createElement('button');
@@ -1701,6 +1880,524 @@ function endPcQuiz() {
     actions: [['↻ Rifai il quiz', startPcQuiz, true], ['🔍 Esplora', startPcExplore], ['🏠 Menu', goMenu]],
   });
 }
+
+/* ======================= IL GRANDE QUIZ DEL COMPUTER ======================= */
+/* Tipi di domanda:
+   scrivi / completa / anagramma / io → si risponde scrivendo (a = risposte accettate, la prima è quella "ufficiale")
+   scelta → A/B/C   ·   vf → V/F   ·   copia → frase d'oro da ricopiare (3 per tappa, in "copy") */
+const TAPPE = [
+  { emoji: '🖥️', title: 'La squadra sulla scrivania', desc: 'Monitor, tastiera, mouse e casse.',
+    qs: [
+      { t: 'scrivi', e: '🖥️', q: "Si illumina come una finestra colorata: lì vedi i disegni, i video e le lettere che scrivi.", a: ['monitor', 'schermo'], why: "Il monitor è lo schermo del computer." },
+      { t: 'scrivi', e: '⌨️', q: "Ha più di cento tasti: alcuni scrivono le lettere, altri i numeri.", a: ['tastiera'], why: "Con la tastiera scrivi testi e dai comandi al computer." },
+      { t: 'scrivi', e: '🖱️', q: "Lo muovi sul tappetino e la freccia sullo schermo lo segue come un'ombra.", a: ['mouse'], why: "Mouse in inglese vuol dire «topo»." },
+      { t: 'scrivi', e: '🔊', q: "Stanno ai lati del monitor e fanno uscire la musica e le voci dei video.", a: ['casse', 'altoparlanti', 'casse audio'], why: "Al posto delle casse puoi usare anche le cuffie." },
+      { t: 'completa', e: '⌨️', q: "La barra ___, il tasto più lungo di tutti, separa le parole.", a: ['spaziatrice'], why: "La barra spaziatrice si preme con il pollice." },
+      { t: 'completa', e: '🖱️', q: "Quando muovo il mouse sul ___, la freccia sullo schermo lo segue.", a: ['tappetino'], why: "Il tappetino aiuta il mouse a scorrere bene." },
+      { t: 'completa', e: '🤝', q: "Ogni pezzo è importante, ma insieme formano una ___ fortissima!", a: ['squadra'], why: "Monitor, tastiera, mouse e casse lavorano tutti insieme." },
+      { t: 'scelta', q: "Perché il mouse si chiama così?", opts: ["Perché assomiglia a un piccolo topo con la coda", "Perché squittisce quando clicchi", "Perché è il pezzo più piccolo del computer"], ok: 0, why: "Mouse in inglese vuol dire «topo», e il filo sembra la coda!" },
+      { t: 'scelta', q: "Quale tasto separa le parole quando scrivi?", opts: ["La barra spaziatrice", "Il tasto Invio", "Il tasto Maiusc"], ok: 0, why: "Lo spazio si fa con la barra spaziatrice, il tasto più lungo." },
+      { t: 'vf', q: "La tastiera ha meno di dieci tasti.", ok: false, why: "Falso! Ne ha più di cento." },
+      { t: 'vf', q: "Le casse fanno uscire i suoni dal computer.", ok: true, why: "Vero! Le casse sono un dispositivo di output." },
+      { t: 'anagramma', e: '🖱️', q: "Lo muovi con la mano per spostare la freccia.", a: ['mouse'] },
+      { t: 'anagramma', e: '🖥️', q: "Lo schermo del computer.", a: ['monitor'] },
+    ],
+    copy: ["Il monitor mostra le immagini.", "La tastiera ha più di cento tasti.", "Il mouse assomiglia a un piccolo topo con la coda."] },
+
+  { emoji: '🔧', title: 'Il viaggio dentro il case', desc: 'Scheda madre, CPU, ventola e alimentatore.',
+    qs: [
+      { t: 'scrivi', e: '🗄️', q: "È la scatola del computer: sembra un semplice contenitore, ma dentro c'è una piccola città.", a: ['case'], why: "Dentro il case ci sono i pezzi più importanti del computer." },
+      { t: 'scrivi', e: '🟩', q: "È una grande scheda verde attraversata da tante linee sottili, come le strade di una città.", a: ['scheda madre'], why: "Tutti gli altri pezzi sono collegati alla scheda madre." },
+      { t: 'scrivi', e: '🧠', q: "È il cervello del computer: fa miliardi di calcoli ogni secondo.", a: ['cpu', 'processore'], why: "La CPU si chiama anche processore." },
+      { t: 'scrivi', e: '🌀', q: "Gira sopra la CPU e soffia aria fresca per non farla scaldare troppo.", a: ['ventola'], why: "Senza ventola la CPU diventerebbe troppo calda." },
+      { t: 'scrivi', e: '🔋', q: "Prende la corrente dalla presa del muro e la distribuisce a tutti i pezzi.", a: ['alimentatore'], why: "È come la centrale elettrica di una città." },
+      { t: 'completa', e: '🛣️', q: "Le linee della scheda madre sono come le ___ di una città.", a: ['strade'], why: "Su quelle strade viaggiano le informazioni da un pezzo all'altro." },
+      { t: 'completa', e: '🔥', q: "La CPU lavora così tanto che diventa ___.", a: ['calda'], why: "Per questo sopra di lei gira una ventola." },
+      { t: 'completa', e: '🏙️', q: "Se apriamo il case scopriamo una piccola ___ piena di luci e di strade.", a: ['città'], why: "Il palazzo più importante di questa città è la CPU." },
+      { t: 'scelta', q: "L'alimentatore è come…", opts: ["la centrale elettrica di una città", "la biblioteca di una città", "il semaforo di una città"], ok: 0, why: "Dà la corrente a tutti i pezzi, proprio come una centrale elettrica." },
+      { t: 'scelta', q: "Che cosa vuol dire CPU?", opts: ["Central Processing Unit", "Computer Per Ufficio", "Cavo Potente Universale"], ok: 0, why: "Central Processing Unit: unità centrale di elaborazione." },
+      { t: 'vf', q: "Il case è il cervello del computer.", ok: false, why: "Falso! Il case è la scatola. Il cervello è la CPU, che sta dentro." },
+      { t: 'vf', q: "Sulle linee della scheda madre viaggiano le informazioni.", ok: true, why: "Vero! Collegano un pezzo all'altro." },
+      { t: 'anagramma', e: '🌀', q: "Soffia aria fresca sulla CPU.", a: ['ventola'] },
+    ],
+    copy: ["Il case è la scatola del computer.", "La CPU è il cervello del computer.", "L'alimentatore prende la corrente dalla presa del muro."] },
+
+  { emoji: '🎒', title: 'La lavagna e lo zaino', desc: 'RAM, hard disk, SSD e chiavetta USB.',
+    qs: [
+      { t: 'scrivi', e: '⚡', q: "Memoria velocissima che si cancella tutta quando spegni il computer.", a: ['ram'], why: "La RAM tiene le cose che servono in quel momento." },
+      { t: 'scrivi', e: '💿', q: "Memoria con dentro un disco che gira velocissimo, come un giradischi.", a: ['hard disk', 'disco rigido'], why: "L'hard disk ricorda per sempre i tuoi file." },
+      { t: 'scrivi', e: '💾', q: "Memoria moderna, silenziosa e ancora più veloce dell'hard disk.", a: ['ssd'], why: "L'SSD non ha pezzi che girano: per questo è silenzioso." },
+      { t: 'scrivi', e: '🔌', q: "Piccola come un dito, si mette in tasca per portare un file a un amico.", a: ['chiavetta usb', 'chiavetta', 'pennetta usb', 'pennetta', 'penna usb'], why: "Si attacca a una porta USB del computer." },
+      { t: 'completa', e: '🧑‍🏫', q: "La RAM è come una ___: il computer ci scrive sopra le cose che gli servono.", a: ['lavagna'], why: "E come una lavagna, alla fine si cancella!" },
+      { t: 'completa', e: '🎒', q: "L'hard disk e l'SSD sono come uno ___ dove teniamo le cose per sempre.", a: ['zaino'], why: "Lì salviamo foto, compiti e giochi." },
+      { t: 'completa', e: '🧠', q: "Anche il computer, come noi, ha bisogno di ___ le cose.", a: ['ricordare'], why: "Per questo usa due tipi di memoria." },
+      { t: 'scelta', q: "Quale memoria si cancella quando spegni il computer?", opts: ["La RAM", "L'SSD", "L'hard disk"], ok: 0, why: "La RAM è velocissima, ma si svuota quando spegni." },
+      { t: 'scelta', q: "Dove salvi le foto delle vacanze per tenerle per sempre?", opts: ["Sull'hard disk o sull'SSD", "Nella RAM", "Nelle casse"], ok: 0, why: "Sono le memorie che ricordano anche a computer spento." },
+      { t: 'vf', q: "Se spengo il computer, i file salvati sull'SSD spariscono.", ok: false, why: "Falso! L'SSD ricorda per sempre. È la RAM che si cancella." },
+      { t: 'vf', q: "L'SSD è più silenzioso dell'hard disk.", ok: true, why: "Vero! Non ha dischi che girano." },
+      { t: 'anagramma', e: '🧑‍🏫', q: "La RAM assomiglia a questo oggetto della scuola.", a: ['lavagna'] },
+      { t: 'anagramma', e: '🎒', q: "Ci metti dentro le cose da tenere per sempre.", a: ['zaino'] },
+    ],
+    copy: ["La RAM è come una lavagna.", "Quando spegni il computer, la RAM si cancella.", "Salviamo le foto sull'hard disk o sull'SSD."] },
+
+  { emoji: '🚪', title: 'Le porte: input e output', desc: 'Cosa entra e cosa esce dal computer.',
+    qs: [
+      { t: 'io', e: '⌨️', q: "Ogni volta che premo un tasto della tastiera, una lettera entra nel computer.", a: ['input'], why: "La tastiera fa ENTRARE le lettere: è input." },
+      { t: 'io', e: '🖥️', q: "Il monitor mi mostra le immagini.", a: ['output'], why: "Il monitor fa USCIRE le immagini: è output." },
+      { t: 'io', e: '📷', q: "La webcam fa entrare la mia immagine durante una videochiamata.", a: ['input'], why: "La webcam fa ENTRARE la tua immagine: è input." },
+      { t: 'io', e: '🖨️', q: "La stampante porta su un foglio di carta quello che ho scritto.", a: ['output'], why: "La stampante fa USCIRE il foglio: è output." },
+      { t: 'io', e: '🔊', q: "Le casse mi fanno sentire i suoni.", a: ['output'], why: "Le casse fanno USCIRE i suoni: sono output." },
+      { t: 'io', e: '🖱️', q: "Il mouse dice al computer dove voglio cliccare.", a: ['input'], why: "Il mouse fa ENTRARE i tuoi comandi: è input." },
+      { t: 'completa', e: '🚪', q: "Input è una parola inglese che significa ___.", a: ['entrata'], why: "Input = entrata: le informazioni entrano nel computer." },
+      { t: 'completa', e: '🚪', q: "Output è una parola inglese che significa ___.", a: ['uscita'], why: "Output = uscita: le informazioni escono dal computer." },
+      { t: 'scrivi', e: '🖨️', q: "Porta su un foglio di carta quello che hai scritto al computer.", a: ['stampante'], why: "La stampante è un dispositivo di output." },
+      { t: 'scrivi', e: '📷', q: "La piccola telecamera sopra lo schermo, per le videochiamate con i nonni.", a: ['webcam', 'telecamera', 'videocamera'], why: "La webcam è un dispositivo di input." },
+      { t: 'scelta', q: "Quando scrivo, le lettere entrano dalla tastiera. Poi che cosa succede?", opts: ["La CPU le elabora e il monitor le mostra", "La stampante le cancella", "Le casse le nascondono"], ok: 0, why: "Entrano, vengono pensate ed escono: un viaggio completo!" },
+      { t: 'vf', q: "Il microfono fa entrare la mia voce nel computer: è un dispositivo di input.", ok: true, why: "Vero! Tutto quello che fa entrare informazioni è input." },
+      { t: 'anagramma', e: '🚪', q: "Output vuol dire…", a: ['uscita'] },
+    ],
+    copy: ["La tastiera e il mouse sono dispositivi di input.", "Il monitor, le casse e la stampante sono dispositivi di output.", "Le informazioni entrano, vengono pensate ed escono."] },
+
+  { emoji: '🎮', title: 'Curiosità da esperto', desc: 'Scheda video, pixel, scorciatoie e altro.',
+    qs: [
+      { t: 'scrivi', e: '🎮', q: "Disegna le immagini e i giochi 3D e li manda al monitor.", a: ['scheda video', 'scheda grafica', 'gpu'], why: "Si chiama anche GPU ed è utilissima per i videogiochi." },
+      { t: 'scrivi', e: '🔋', q: "Senza di lui nessun pezzo del computer si accenderebbe.", a: ['alimentatore'], why: "L'alimentatore dà la corrente giusta a ogni pezzo." },
+      { t: 'completa', e: '🔍', q: "Le immagini sullo schermo sono fatte di milioni di puntini colorati chiamati ___.", a: ['pixel'], why: "Avvicinati molto a uno schermo: forse riesci a vederli!" },
+      { t: 'completa', e: '⌨️', q: "Le lettere della tastiera sono in ordine ___, come nelle vecchie macchine da scrivere.", a: ['qwerty'], why: "Guarda la prima fila di lettere: Q W E R T Y!" },
+      { t: 'completa', e: '🖱️', q: "Con i tasti del mouse clicchi e con la ___ scorri la pagina.", a: ['rotellina', 'rotella'], why: "La rotellina sta tra il tasto sinistro e quello destro." },
+      { t: 'scelta', q: "Che cosa vuol dire USB?", opts: ["Universal Serial Bus", "Uno Schermo Bellissimo", "Usa Sempre il Bottone"], ok: 0, why: "È una presa «universale»: ci attacchi chiavette, mouse, tastiere…" },
+      { t: 'scelta', q: "Molti chiamano il case «la CPU». È giusto?", opts: ["No: la CPU è solo uno dei pezzi dentro il case", "Sì, sono la stessa cosa", "Sì, ma solo nei computer portatili"], ok: 0, why: "Il case è la scatola, la CPU è il cervello che sta dentro." },
+      { t: 'scelta', q: "Con quale scorciatoia salvi il tuo lavoro in Word?", opts: ["Ctrl + S", "Ctrl + C", "Ctrl + V"], ok: 0, why: "Ctrl + S = Salva. Ctrl + C copia e Ctrl + V incolla." },
+      { t: 'vf', q: "Esistono stampanti 3D che creano oggetti di plastica.", ok: true, why: "Vero! Costruiscono gli oggetti strato dopo strato." },
+      { t: 'vf', q: "Il disco di un hard disk può girare 7.200 volte al minuto.", ok: true, why: "Vero! Gira velocissimo, come un giradischi a super velocità." },
+      { t: 'vf', q: "Più RAM ha il computer, meno programmi può tenere aperti insieme.", ok: false, why: "Falso! Più RAM hai, più programmi puoi tenere aperti insieme." },
+      { t: 'anagramma', e: '🔍', q: "Il puntino colorato che forma le immagini.", a: ['pixel'] },
+      { t: 'anagramma', e: '🖥️', q: "Un altro nome del monitor.", a: ['schermo'] },
+    ],
+    copy: ["La scheda video disegna le immagini dei videogiochi.", "Le immagini sono fatte di milioni di pixel.", "Con Ctrl + S salvo il mio lavoro."] },
+
+  { emoji: '🏆', title: 'La sfida finale', desc: 'Domande a sorpresa da tutte le tappe!', final: true,
+    copy: ["Ora conosco tutti i pezzi del computer!", "Il computer è come una casa con tante porte: da alcune le informazioni entrano, da altre escono.", "Monitor, tastiera, mouse, CPU e RAM: insieme formano una squadra fortissima!"] },
+];
+const QTYPE = {
+  scrivi:    { label: '✍️ Scrivi il nome', color: 'var(--blue)' },
+  completa:  { label: '🧩 Completa la frase', color: 'var(--purple)' },
+  anagramma: { label: '🔀 Lettere mescolate', color: 'var(--orange)' },
+  io:        { label: '🚪 Input o output?', color: 'var(--green)' },
+  scelta:    { label: '🔘 Scegli la risposta', color: 'var(--ink)' },
+  vf:        { label: '⚖️ Vero o falso?', color: 'var(--red)' },
+  copia:     { label: "📝 Frase d'oro da ricopiare", color: '#d9a514' },
+};
+const TYPED = ['scrivi', 'completa', 'anagramma', 'io'];
+const PRAISE = ['Giusto!', 'Esatto!', 'Bravissimo!', 'Perfetto!', 'Grande!', 'Super!'];
+const quiz = { state: 'off', items: [], i: 0 };
+const qIn = $('qzInput');
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+function stripAccents(s) { return s.normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+/* confronto "gentile": niente maiuscole, articoli, punteggiatura e spazi; accenti obbligatori solo in Difficile */
+function normAns(s) {
+  s = String(s).toLowerCase().replace(/[’`´]/g, "'").trim();
+  if (difficulty !== 'difficile') s = stripAccents(s);
+  s = s.replace(/[.,;:!?"«»]/g, ' ').replace(/\s+/g, ' ').trim();
+  s = s.replace(/^(il|lo|la|i|gli|le|un|uno|una|di) /, '').replace(/^(l|un|dell)'\s*/, '');
+  return s.replace(/ /g, '');
+}
+const sameChar = (a, b) => stripAccents(a.toLowerCase()) === stripAccents(b.toLowerCase());
+function quizStars() { const s = store.get('quizStars', []); return TAPPE.map((_, i) => s[i] || 0); }
+function curQ() { return quiz.items[quiz.i]; }
+
+function buildRun(ti) {
+  const T = TAPPE[ti];
+  let qs;
+  if (T.final) {
+    // 2 domande da scrivere per ogni tappa + 3 domande a scelta prese a caso
+    const prev = TAPPE.filter(t => !t.final);
+    qs = prev.flatMap(t => shuffle(t.qs.filter(q => TYPED.includes(q.t))).slice(0, 2));
+    qs.push(...shuffle(prev.flatMap(t => t.qs.filter(q => !TYPED.includes(q.t)))).slice(0, 3));
+    qs = shuffle(qs);
+  } else qs = shuffle(T.qs);
+  const items = qs.map(q => ({ ...q }));
+  const n = items.length;
+  // frasi d'oro: a un terzo, a due terzi e alla fine della tappa
+  items.splice(Math.round(n * 2 / 3), 0, { t: 'copia', text: T.copy[1] });
+  items.splice(Math.round(n / 3), 0, { t: 'copia', text: T.copy[0] });
+  items.push({ t: 'copia', text: T.copy[2] });
+  return items;
+}
+
+/* ---------- mappa ---------- */
+function openQuizMap() {
+  hideResult(); stopQuiz();
+  const stars = quizStars(), tot = stars.reduce((a, b) => a + b, 0), max = TAPPE.length * 3;
+  const next = stars.findIndex(s => s === 0);
+  $('tappeList').innerHTML = TAPPE.map((t, i) => `
+    <button class="card tappa ${i === next ? 'next' : ''} ${stars[i] ? 'done' : ''}" data-t="${i}">
+      <div class="t-num">Tappa ${i + 1}</div>
+      <div class="t-emoji">${t.emoji}</div>
+      <h3>${t.title}</h3>
+      <p>${t.desc}</p>
+      <div class="t-stars">${[1, 2, 3].map(k => `<span class="${k <= stars[i] ? '' : 'off'}">⭐</span>`).join('')}</div>
+      <div class="t-go">${stars[i] ? '↻ Rigioca' : '▶ Gioca'} · ⏱ circa 10 min</div>
+    </button>`).join('');
+  $('tappeList').querySelectorAll('.tappa').forEach(b => b.onclick = () => startTappa(+b.dataset.t));
+  $('mapStars').innerHTML = `⭐ ${tot} / ${max} stelle<div class="found-bar"><div style="width:${tot / max * 100}%"></div></div>`;
+  const done = stars.filter(s => s > 0).length, all = done === TAPPE.length;
+  $('dipBtn').disabled = !all;
+  $('dipBtn').textContent = all ? '🎓 Ritira il diploma' : `🔒 Diploma: completa tutte le tappe (${done} / ${TAPPE.length})`;
+  show('quizMap'); window.scrollTo(0, 0);
+}
+
+/* ---------- tappa ---------- */
+function startTappa(ti) {
+  hideResult();
+  const items = buildRun(ti);
+  Object.assign(quiz, {
+    ti, items, i: 0, score: 0, streak: 0, bestStreak: 0, firstTry: 0, chars: 0, copyAcc: [],
+    start: performance.now(),
+    max: items.reduce((s, it) => s + (it.t === 'copia' ? 150 : 100), 0),
+    nQ: items.filter(it => it.t !== 'copia').length,
+  });
+  const T = TAPPE[ti];
+  $('quizTitle').textContent = `${T.emoji} Tappa ${ti + 1}: ${T.title}`;
+  $('quizPill').textContent = DIFF[difficulty].label; $('quizPill').className = 'pill ' + difficulty;
+  mountKeyboard('quizKb');
+  show('quiz'); window.scrollTo(0, 0);
+  renderQ();
+}
+function stopQuiz() { quiz.state = 'off'; }
+
+function renderQ() {
+  const it = curQ();
+  const typed = TYPED.includes(it.t), copy = it.t === 'copia';
+  Object.assign(quiz, { state: 'ask', tries: 0, paid: 0, reveal: false, lastLen: 0, copyErr: 0, copyTyped: 0 });
+  quiz.hints = difficulty === 'facile' && it.t !== 'io' ? 1 : 0;   // in Facile la prima lettera è già scoperta
+
+  let h = `<span class="q-type" style="background:${QTYPE[it.t].color}">${QTYPE[it.t].label}</span>`;
+  if (copy) {
+    it.target = prepText(it.text);
+    h += `<p class="q-help">${difficulty === 'facile'
+      ? 'Ricopia la frase qui sotto (tutto minuscolo, senza punti). Il tasto giallo ti dice cosa premere.'
+      : 'Ricopia la frase esattamente com\'è scritta, con maiuscole e punteggiatura.'}</p>
+      <div class="copy-text" id="copyText"></div>`;
+  } else {
+    let q = it.q;
+    if (it.t === 'completa') q = q.replace('___', '<span class="blank" id="blank"></span>');
+    if (it.t === 'anagramma') q = `Rimetti in ordine le lettere!<span class="q-clue">Indizio: ${it.q}</span>`;
+    if (it.t === 'io') q = `${it.q}<span class="q-clue">È un dispositivo di <b>input</b> o di <b>output</b>? Scrivilo!</span>`;
+    h += `<div class="q-row"><div class="q-emoji">${it.e || (it.t === 'vf' ? '⚖️' : '🤔')}</div><div class="q-text">${q}</div></div>`;
+    if (it.t === 'anagramma') {
+      const w = it.a[0].toUpperCase();
+      let s; do { s = shuffle([...w]).join(''); } while (s === w);
+      h += `<div class="tiles">${[...s].map((c, i) => `<span class="tile" style="rotate:${(i % 2 ? 1 : -1) * (3 + (i % 3) * 2)}deg">${c}</span>`).join('')}</div>`;
+    }
+    if (it.t === 'io') h += `<div class="io-help"><span>⬅️ <b>input</b> = entrata</span><span>➡️ <b>output</b> = uscita</span></div>`;
+    if (typed) h += `<div class="slots" id="slots"></div>`;
+    if (it.t === 'scelta') {
+      it.order = shuffle(it.opts.map((_, i) => i));
+      h += `<div class="opts">${it.order.map((o, k) => `<button class="opt" data-k="${k}"><span class="k">${'ABC'[k]}</span>${it.opts[o]}</button>`).join('')}</div>
+        <p class="q-help">Premi <b>A</b>, <b>B</b> o <b>C</b> sulla tastiera, oppure clicca.</p>`;
+    }
+    if (it.t === 'vf') h += `<div class="opts two"><button class="opt" data-k="0"><span class="k">V</span>Vero</button><button class="opt" data-k="1"><span class="k">F</span>Falso</button></div>
+        <p class="q-help">Premi <b>V</b> per vero oppure <b>F</b> per falso.</p>`;
+  }
+  $('qzBody').innerHTML = h;
+  $('qzBody').querySelectorAll('.opt').forEach(b => b.onclick = () => choose(+b.dataset.k));
+  $('qzFb').innerHTML = '';
+  $('qzActions').style.display = typed || copy ? '' : 'none';
+  $('qzHint').style.display = $('qzOk').style.display = typed ? '' : 'none';
+  $('qzHint').disabled = false;
+  $('quizKb').style.display = copy ? '' : 'none';
+  qIn.value = ''; qIn.disabled = false; qIn.classList.remove('error');
+  qIn.maxLength = copy ? it.target.length + 10 : 40;
+  qIn.placeholder = copy ? 'Ricopia qui…' : 'Scrivi la risposta e premi Invio…';
+  if (copy) renderCopy(); else { highlightKey(null); renderSlots(); }
+  if (typed || copy) qIn.focus(); else qIn.blur();
+  renderQuizHud();
+}
+
+function renderQuizHud() {
+  const n = quiz.items.length;
+  $('qzPos').textContent = `${Math.min(quiz.i + 1, n)} / ${n}`;
+  $('qzScore').textContent = quiz.score;
+  $('qzStreak').textContent = quiz.streak;
+  $('qzChars').textContent = quiz.chars;
+  $('qzBar').style.width = (quiz.i + (quiz.state === 'feedback' ? 1 : 0)) / n * 100 + '%';
+}
+
+/* caselle con le lettere: mostrano quante lettere ha la parola e gli aiutini */
+function renderSlots() {
+  const it = curQ();
+  const blank = $('blank');
+  if (blank) blank.textContent = qIn.value || ' ';
+  const el = $('slots'); if (!el) return;
+  const visible = quiz.reveal || quiz.hints > 0 || (it.t !== 'io' && difficulty !== 'difficile');
+  el.style.display = visible ? '' : 'none';
+  if (!visible) return;
+  const live = difficulty === 'facile' || quiz.reveal;   // colora subito le lettere giuste/sbagliate
+  const typed = qIn.value.replace(/\s/g, '');
+  let li = 0, html = '';
+  for (const ch of it.a[0]) {
+    if (ch === ' ') { html += '<span class="slot gap"></span>'; continue; }
+    const t = typed[li];
+    let cls = 'slot', txt = '';
+    if (t !== undefined) { txt = t; cls += ' typed'; if (live) cls += sameChar(t, ch) ? ' ok' : ' bad'; }
+    else if (li < quiz.hints || quiz.reveal) { txt = ch; cls += ' hint'; }
+    html += `<span class="${cls}">${esc(txt)}</span>`;
+    li++;
+  }
+  for (; li < typed.length; li++) html += `<span class="slot typed${live ? ' bad' : ''}">${esc(typed[li])}</span>`;
+  el.innerHTML = html;
+}
+
+function useHint() {
+  const it = curQ();
+  if (quiz.state !== 'ask' || !TYPED.includes(it.t) || quiz.reveal) return;
+  const len = it.a[0].replace(/ /g, '').length;
+  if (quiz.hints >= len - 1) {
+    $('qzFb').innerHTML = '<div class="q-feedback bad">Più aiutini di così non posso darti… prova a scrivere!</div>';
+  } else {
+    quiz.hints++; quiz.paid++; sfx.count();
+    $('qzFb').innerHTML = '<div class="q-feedback">💡 Ecco una lettera in più! (l\'aiutino costa 20 punti)</div>';
+  }
+  renderSlots(); qIn.focus();
+}
+function shakeIn() { qIn.classList.remove('error'); void qIn.offsetWidth; qIn.classList.add('error'); setTimeout(() => qIn.classList.remove('error'), 400); }
+
+function submitTyped() {
+  const it = curQ();
+  if (quiz.state !== 'ask' || !TYPED.includes(it.t)) return;
+  const val = qIn.value;
+  if (!val.trim()) return shakeIn();
+  const ok = it.a.some(a => normAns(val) === normAns(a));
+  if (quiz.reveal) {   // dopo la soluzione bisogna comunque scriverla giusta
+    if (ok) return answered(false, 0, '📚 Ora lo sai!', `La risposta giusta è <b>${esc(it.a[0])}</b>.`, 'learn');
+    sfx.miss(); return shakeIn();
+  }
+  if (ok) return answered(true, Math.max(10, (quiz.tries ? 50 : 100) - quiz.paid * 20));
+  quiz.tries++; sfx.miss(); shakeIn();
+  if (quiz.tries >= 2) {
+    quiz.reveal = true; qIn.value = ''; quiz.lastLen = 0; $('qzHint').disabled = true;
+    $('qzFb').innerHTML = `<div class="q-feedback bad">❌ La risposta giusta è <b>${esc(it.a[0].toUpperCase())}</b>. Scrivila anche tu per andare avanti!</div>`;
+  } else {
+    if (quiz.hints < it.a[0].replace(/ /g, '').length - 1) quiz.hints++;
+    $('qzFb').innerHTML = `<div class="q-feedback bad">🤔 «${esc(val.trim())}» non è giusto. Riprova: ti regalo un aiutino!</div>`;
+    qIn.select();
+  }
+  renderSlots();
+}
+
+function choose(k) {
+  const it = curQ();
+  if (quiz.state !== 'ask' || (it.t !== 'scelta' && it.t !== 'vf')) return;
+  const right = it.t === 'vf' ? (it.ok ? 0 : 1) : it.order.indexOf(it.ok);
+  const btns = $('qzBody').querySelectorAll('.opt');
+  btns.forEach(b => b.disabled = true);
+  btns[right].classList.add('right');
+  if (k !== right) btns[k].classList.add('wrong');
+  const ans = it.t === 'vf' ? (it.ok ? 'Vero' : 'Falso') : it.opts[it.ok];
+  k === right ? answered(true, 100) : answered(false, 0, '❌ Peccato!', `La risposta giusta era: <b>${ans}</b>`);
+}
+
+/* frase d'oro: come nella gara, si va avanti solo correggendo gli errori */
+function renderCopy() {
+  const t = curQ().target, val = qIn.value;
+  let ok = 0;
+  while (ok < val.length && ok < t.length && val[ok] === t[ok]) ok++;
+  let html = '';
+  for (let i = 0; i < t.length; i++) {
+    let c = 'ch';
+    if (i < ok) c += ' ok'; else if (i < val.length) c += ' bad';
+    if (quiz.state === 'ask' && i === val.length) c += ' cursor';
+    html += `<span class="${c}">${esc(t[i])}</span>`;
+  }
+  $('copyText').innerHTML = html;
+  qIn.classList.toggle('error', val.length > ok);
+  highlightKey(val.length > ok ? 'Backspace' : t[ok]);
+}
+function finishCopy() {
+  const acc = quiz.copyTyped ? Math.max(0, Math.round((quiz.copyTyped - quiz.copyErr) / quiz.copyTyped * 100)) : 100;
+  const pts = Math.round(150 * acc / 100);
+  quiz.copyAcc.push(acc);
+  answered(true, pts, `📝 Frase completata! <span class="pts">+${pts}</span>`,
+    `🎯 Precisione: <b>${acc}%</b>${acc === 100 ? ' — nessun errore, perfetto!' : acc >= 90 ? ' — bravissimo!' : ' — la prossima volta vai più piano e guarda il tasto giallo.'}`);
+  renderCopy();
+}
+
+function answered(ok, pts, title, extra = '', cls) {
+  const it = curQ();
+  quiz.state = 'feedback'; quiz.fbAt = performance.now();
+  quiz.score += pts;
+  const first = ok && quiz.tries === 0;
+  if (it.t !== 'copia') {
+    if (first) { quiz.firstTry++; quiz.streak++; quiz.bestStreak = Math.max(quiz.bestStreak, quiz.streak); }
+    else quiz.streak = 0;
+  }
+  qIn.disabled = true; qIn.classList.remove('error'); highlightKey(null);
+  $('qzHint').disabled = true;
+  ok || cls === 'learn' ? sfx.level() : sfx.lose();
+  if (first && it.t !== 'copia' && quiz.streak % 5 === 0) extra += `<div class="fb-why">🔥 <b>${quiz.streak} risposte giuste di fila!</b></div>`;
+  title = title || `✅ ${pick(PRAISE)} <span class="pts">+${pts}</span>`;
+  $('qzFb').innerHTML = `
+    <div class="fb-box ${cls || (ok ? 'good' : 'bad')}">
+      <div class="fb-title">${title}</div>
+      ${extra ? `<div>${extra}</div>` : ''}
+      ${it.why ? `<div class="fb-why">💡 ${it.why}</div>` : ''}
+      <button class="btn primary" id="qzNext">Avanti ⏎</button>
+    </div>`;
+  $('qzNext').onclick = nextQ;
+  $('qzHint').style.display = $('qzOk').style.display = 'none';
+  $('qzFb').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  renderQuizHud();
+}
+function nextQ() {
+  if (quiz.state !== 'feedback') return;
+  quiz.i++;
+  if (quiz.i >= quiz.items.length) return endTappa();
+  renderQ();
+}
+
+function endTappa() {
+  quiz.state = 'off';
+  const ti = quiz.ti, last = ti === TAPPE.length - 1;
+  const sec = (performance.now() - quiz.start) / 1000;
+  const pct = quiz.score / quiz.max;
+  const stars = pct >= 0.85 ? 3 : pct >= 0.6 ? 2 : 1;
+  const saved = store.get('quizStars', []);
+  const prev = saved[ti] || 0;
+  if (stars > prev) { saved[ti] = stars; store.set('quizStars', saved); }
+  const allDone = quizStars().every(s => s > 0);
+  const acc = quiz.copyAcc.length ? Math.round(quiz.copyAcc.reduce((a, b) => a + b, 0) / quiz.copyAcc.length) : 100;
+  let actions;
+  if (last && allDone) actions = [['🎓 Ritira il diploma', openDiploma, true], ['🗺️ Mappa', openQuizMap], ['🏠 Menu', goMenu]];
+  else if (!last) actions = [[`➡ Tappa ${ti + 2}`, () => startTappa(ti + 1), true], ['↻ Rifai la tappa', () => startTappa(ti)], ['🗺️ Mappa', openQuizMap]];
+  else actions = [['🗺️ Mappa', openQuizMap, true], ['↻ Rifai la sfida', () => startTappa(ti)]];
+  sfx.win();
+  showResult({
+    emoji: stars === 3 ? '🏆' : stars === 2 ? '🎉' : '👍',
+    title: last ? 'Sfida finale completata!' : `Tappa ${ti + 1} completata!`,
+    sub: stars === 3 ? 'Fantastico, sai proprio tutto!' : stars === 2 ? 'Molto bene! Ancora un pochino e prendi 3 stelle.' : 'Ce l\'hai fatta! Rigioca la tappa per prendere più stelle.',
+    stars, record: prev > 0 && stars > prev,
+    stats: [['⭐ Punti', `${quiz.score} / ${quiz.max}`], ['✅ Giuste al primo colpo', `${quiz.firstTry} / ${quiz.nQ}`],
+            ['✍️ Lettere scritte', quiz.chars], ['🎯 Precisione frasi', acc + '%'],
+            ['🔥 Record di fila', quiz.bestStreak], ['⏱ Tempo', fmtTime(sec)]],
+    actions, hint: `Premi Invio per: ${actions[0][0]}`,
+  });
+}
+
+/* ---------- diploma ---------- */
+function openDiploma() {
+  hideResult(); stopQuiz();
+  show('diploma'); window.scrollTo(0, 0);
+  const name = store.get('quizName', '');
+  name ? renderDiploma(name) : askName();
+}
+function askName() {
+  $('dipBody').innerHTML = `
+    <div class="card name-card">
+      <div class="r-emoji">🎓</div>
+      <h2>Hai completato tutte le tappe!</h2>
+      <p>Ultimo esercizio di scrittura: scrivi il tuo <b>nome e cognome</b> per il diploma, poi premi Invio.</p>
+      <input class="type-input" id="dipName" maxlength="40" autocomplete="off" spellcheck="false" placeholder="Nome e cognome…">
+      <button class="play-btn yellow" id="dipGo">Crea il diploma 🎓</button>
+    </div>`;
+  const inp = $('dipName');
+  inp.value = store.get('quizName', '');
+  const go = () => {
+    const n = inp.value.trim().replace(/\s+/g, ' ');
+    if (!n) { inp.classList.remove('error'); void inp.offsetWidth; inp.classList.add('error'); return; }
+    store.set('quizName', n); sfx.win(); renderDiploma(n);
+  };
+  $('dipGo').onclick = go;
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); go(); } });
+  inp.focus();
+}
+function renderDiploma(name) {
+  const tot = quizStars().reduce((a, b) => a + b, 0);
+  const date = new Date().toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
+  $('dipBody').innerHTML = `
+    <div class="diploma">
+      <div class="d-medal">🏅</div>
+      <div class="d-over">Diploma di</div>
+      <h2 class="d-title">Esperto del Computer</h2>
+      <p>Si certifica che</p>
+      <div class="d-name">${esc(name)}</div>
+      <p>ha completato <b>Il grande quiz del computer</b> e conosce i suoi pezzi: monitor, tastiera, mouse, casse,
+      case, scheda madre, CPU, ventola, alimentatore, RAM, hard disk, SSD, chiavetta USB, webcam e stampante.
+      Sa anche riconoscere i dispositivi di <b>input</b> e di <b>output</b>!</p>
+      <div class="d-stars">⭐ ${tot} / ${TAPPE.length * 3} stelle</div>
+      <div class="d-foot"><span>📅 ${date}</span><span>✍️ Firma: ____________________</span></div>
+    </div>
+    <div class="d-actions">
+      <button class="btn primary" id="dipPrint">🖨️ Stampa</button>
+      <button class="btn" id="dipRename">✏️ Cambia nome</button>
+    </div>`;
+  $('dipPrint').onclick = () => window.print();
+  $('dipRename').onclick = askName;
+}
+
+/* ---------- comandi ---------- */
+$('playQuiz').onclick = openQuizMap;
+$('quizMapMenu').onclick = goMenu;
+$('quizMenu').onclick = goMenu;
+$('dipMenu').onclick = goMenu;
+$('quizToMap').onclick = openQuizMap;
+$('dipMap').onclick = openQuizMap;
+$('dipBtn').onclick = openDiploma;
+$('qzHint').onclick = useHint;
+$('qzOk').onclick = submitTyped;
+$('qzCard').addEventListener('click', e => {
+  if (quiz.state !== 'ask' || e.target.closest('button')) return;
+  const it = curQ();
+  if (TYPED.includes(it.t) || it.t === 'copia') qIn.focus();
+});
+qIn.addEventListener('paste', e => e.preventDefault());
+qIn.addEventListener('drop', e => e.preventDefault());
+qIn.addEventListener('input', e => {
+  if (quiz.state !== 'ask') return;
+  const it = curQ(), val = qIn.value;
+  if (e.inputType && e.inputType.startsWith('insert')) quiz.chars += (e.data || ' ').length;
+  if (it.t === 'copia') {
+    const t = it.target;
+    for (let i = quiz.lastLen; i < val.length; i++) {
+      quiz.copyTyped++;
+      if (val[i] !== t[i] || val.slice(0, i) !== t.slice(0, i)) { quiz.copyErr++; sfx.miss(); }
+    }
+    quiz.lastLen = val.length;
+    renderCopy();
+    if (val === t) finishCopy();
+  } else {
+    quiz.lastLen = val.length;
+    renderSlots();
+  }
+  renderQuizHud();
+});
+qIn.addEventListener('keydown', e => {
+  if (e.key === 'Enter') { e.preventDefault(); submitTyped(); }
+  else if (e.key === 'Tab') { e.preventDefault(); useHint(); }
+  else if (e.key === 'Escape') openQuizMap();
+});
+document.addEventListener('keydown', e => {
+  if (current !== 'quiz' || $('resultOverlay').classList.contains('show') || e.ctrlKey || e.altKey || e.metaKey) return;
+  if (quiz.state === 'feedback') {
+    if (e.key === 'Enter' && !e.repeat && performance.now() - quiz.fbAt > 300) { e.preventDefault(); nextQ(); }
+    return;
+  }
+  if (quiz.state !== 'ask') return;
+  const it = curQ(), k = e.key.toLowerCase();
+  if (it.t === 'scelta') {
+    const i = Math.max('abc'.indexOf(k), '123'.indexOf(k));
+    if (k.length === 1 && i >= 0 && i < it.opts.length) choose(i);
+  } else if (it.t === 'vf') {
+    if (k === 'v') choose(0); else if (k === 'f') choose(1);
+  }
+});
 
 /* pausa automatica se si cambia finestra durante la pioggia o la corsa */
 document.addEventListener('visibilitychange', () => {
