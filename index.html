@@ -429,6 +429,58 @@
   .d-foot { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-top: 22px; color: var(--muted); font-weight: 700; }
   .d-actions { display: flex; gap: 10px; justify-content: center; margin-top: 18px; }
   .d-actions .btn { font-size: 17px; padding: 10px 18px; }
+  /* ---------- giocatori e progressi ---------- */
+  .player-btn { font-size: 16px; font-weight: 800; color: var(--ink); max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pl-list { display: grid; gap: 8px; margin: 14px 0; text-align: left; }
+  .pl-row { display: flex; gap: 8px; }
+  .pl {
+    flex: 1; display: flex; align-items: center; gap: 12px; border: 3px solid var(--line); background: #fff; border-radius: 14px;
+    padding: 10px 14px; font-weight: 800; font-size: 19px; text-align: left; color: var(--ink);
+  }
+  .pl:hover { border-color: var(--blue); }
+  .pl.on { border-color: var(--green); background: var(--green-soft); }
+  .pl small { margin-left: auto; color: var(--muted); font-size: 13px; }
+  .pl-del { border: 2px solid var(--line); background: #fff; border-radius: 12px; padding: 0 12px; font-size: 18px; }
+  .pl-del:hover { background: var(--red-soft); border-color: var(--red); }
+  .pl-new { display: flex; gap: 8px; }
+  .pl-new .type-input { margin: 0; font-size: 20px; padding: 10px 14px; flex: 1; min-width: 0; }
+
+  .h-sum { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+  @media (max-width: 700px) { .h-sum { grid-template-columns: 1fr 1fr; } }
+  .h-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; align-items: start; }
+  @media (max-width: 860px) { .h-grid { grid-template-columns: 1fr; } }
+  .h-head { margin: 0 0 12px; font-size: 21px; }
+  .h-empty { color: var(--muted); text-align: center; padding: 26px 10px; font-weight: 700; }
+  #histChart { position: relative; }
+  #histChart svg { width: 100%; height: auto; display: block; overflow: visible; }
+  .h-axis { font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; fill: var(--muted); }
+  .h-val { font-family: 'Fredoka', sans-serif; font-size: 15px; font-weight: 700; fill: var(--ink); }
+  .h-tip {
+    position: absolute; pointer-events: none; background: var(--ink); color: #fff; padding: 6px 10px; border-radius: 8px;
+    font-size: 13px; font-weight: 700; white-space: nowrap; transform: translate(-50%, calc(-100% - 12px)); display: none; z-index: 2;
+  }
+  .h-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .h-table th { text-align: left; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .5px; padding: 6px; }
+  .h-table td { padding: 8px 6px; border-top: 2px solid #f3ecdf; }
+  .h-table td.n { font-family: 'Fredoka', sans-serif; font-size: 18px; text-align: center; }
+  .h-table th.n { text-align: center; }
+  .h-day { font-family: 'Fredoka', sans-serif; font-size: 18px; color: var(--muted); margin: 16px 0 6px; text-transform: capitalize; }
+  .h-row {
+    display: grid; grid-template-columns: 52px 1fr auto auto; gap: 12px; align-items: center;
+    padding: 8px 12px; border-radius: 12px; background: #fffaf1; margin-bottom: 6px;
+  }
+  .h-row .h-time { color: var(--muted); font-weight: 800; }
+  .h-row .h-what small { display: block; color: var(--muted); font-weight: 700; }
+  .h-row .h-res { font-weight: 800; text-align: right; }
+  .h-row .h-stars { white-space: nowrap; }
+  .h-row .h-stars .off { filter: grayscale(1); opacity: .3; }
+  .h-row .pill { font-size: 11px; padding: 2px 8px; margin-left: 6px; vertical-align: middle; }
+  @media (max-width: 700px) { .h-row { grid-template-columns: 44px 1fr; } .h-row .h-res { text-align: left; grid-column: 2; } .h-row .h-stars { grid-column: 2; } }
+  .h-more { display: block; margin: 10px auto 0; }
+  .h-backup { margin-top: 16px; display: flex; gap: 16px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .h-backup span { color: var(--muted); }
+  .h-backup-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+
   @media print {
     body { background: #fff !important; }
     header, .topbar, .d-actions, .overlay, .screen:not(#diploma) { display: none !important; }
@@ -443,7 +495,10 @@
     <div class="logo-badge">⌨️</div>
     <h1>Dita <span>Volanti</span></h1>
   </div>
-  <button class="icon-btn" id="muteBtn" title="Suoni on/off">🔊</button>
+  <div style="display:flex; gap:10px">
+    <button class="icon-btn player-btn" id="playerBtn" title="Cambia giocatore">👤</button>
+    <button class="icon-btn" id="muteBtn" title="Suoni on/off">🔊</button>
+  </div>
 </header>
 
 <main>
@@ -517,6 +572,44 @@
     </div>
 
     <div class="records" id="records"></div>
+    <div style="text-align:center; margin-top:14px">
+      <button class="btn" id="openHistory">📒 Tutti i miei progressi</button>
+    </div>
+  </section>
+
+  <!-- ================= PROGRESSI ================= -->
+  <section class="screen" id="storico">
+    <div class="topbar">
+      <h2 id="histTitle">📒 I miei progressi</h2>
+      <div style="display:flex; gap:8px">
+        <button class="btn" id="histMenu">🏠 Menu</button>
+      </div>
+    </div>
+    <div class="h-sum" id="histSum"></div>
+    <div class="h-grid">
+      <div class="card">
+        <h3 class="h-head">⚡ Velocità nella gara di scrittura</h3>
+        <div id="histChart"></div>
+      </div>
+      <div class="card">
+        <h3 class="h-head">🏆 Record</h3>
+        <div id="histRecords"></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3 class="h-head">📅 Diario delle partite</h3>
+      <div class="tabs" id="histFilter"></div>
+      <div id="histList"></div>
+    </div>
+    <div class="card h-backup">
+      <div><b>💾 Copia di sicurezza</b><br><span>I progressi restano salvati in questo browser. Per non perderli, o per portarli su un altro computer, salvali in un file.</span></div>
+      <div class="h-backup-btns">
+        <button class="btn primary" id="histExport">💾 Salva su file</button>
+        <button class="btn" id="histImport">📂 Carica da file</button>
+        <button class="btn" id="histClear">🗑️ Cancella i miei progressi</button>
+        <input type="file" id="histFile" accept=".json,application/json" style="display:none">
+      </div>
+    </div>
   </section>
 
   <!-- ================= RACE ================= -->
@@ -787,6 +880,7 @@
 
 <div class="overlay" id="countOverlay"><div class="count" id="countNum">3</div></div>
 <div class="overlay" id="resultOverlay"><div class="card result" id="resultCard"></div></div>
+<div class="overlay" id="playerOverlay"><div class="card result" id="playerCard"></div></div>
 
 <script>
 /* ======================= DATI ======================= */
@@ -821,6 +915,22 @@ const store = {
   get(k, d) { try { const v = localStorage.getItem('dv_' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem('dv_' + k, JSON.stringify(v)); } catch (e) {} },
 };
+/* ---------- giocatori: record, stelle e storico sono salvati per ciascuno ---------- */
+let players = store.get('players', []);
+let playerId = store.get('player', null);
+if (!players.some(p => p.id === playerId)) playerId = players.length ? players[0].id : null;
+const me = {
+  get(k, d) { return playerId ? store.get(`p${playerId}_${k}`, d) : d; },
+  set(k, v) { if (playerId) store.set(`p${playerId}_${k}`, v); },
+};
+function currentPlayer() { return players.find(p => p.id === playerId); }
+/* registra una partita nello storico del giocatore */
+function logGame(entry) {
+  const h = me.get('history', []);
+  h.push({ ts: Date.now(), diff: difficulty, ...entry });
+  if (h.length > 2000) h.splice(0, h.length - 2000);
+  me.set('history', h);
+}
 let difficulty = store.get('difficulty', 'medio');
 if (!DIFF[difficulty]) difficulty = 'medio';
 let muted = store.get('muted', false);
@@ -948,10 +1058,10 @@ document.querySelectorAll('#diff button').forEach(b => b.onclick = () => {
 function renderRecords() {
   const d = DIFF[difficulty].label;
   $('records').innerHTML = `
-    <div class="record"><b>${store.get('bestWpm_' + difficulty, 0)} ppm</b><span>🏆 Record gara (${d})</span></div>
-    <div class="record"><b>${store.get('bestRain_' + difficulty, 0)}</b><span>🏆 Record pioggia (${d})</span></div>
-    <div class="record"><b>${store.get('bestDino_' + difficulty, 0)}</b><span>🏆 Record corsa (${d})</span></div>
-    <div class="record"><b>${store.get('bestPc_' + difficulty, 0)}</b><span>🏆 Record quiz PC (${d})</span></div>
+    <div class="record"><b>${me.get('bestWpm_' + difficulty, 0)} ppm</b><span>🏆 Record gara (${d})</span></div>
+    <div class="record"><b>${me.get('bestRain_' + difficulty, 0)}</b><span>🏆 Record pioggia (${d})</span></div>
+    <div class="record"><b>${me.get('bestDino_' + difficulty, 0)}</b><span>🏆 Record corsa (${d})</span></div>
+    <div class="record"><b>${me.get('bestPc_' + difficulty, 0)}</b><span>🏆 Record quiz PC (${d})</span></div>
     <div class="record"><b>${quizStars().reduce((a, b) => a + b, 0)} / ${TAPPE.length * 3} ⭐</b><span>🧩 Stelle grande quiz</span></div>`;
 }
 function goMenu() {
@@ -1161,8 +1271,9 @@ function finishRace() {
 
   const stars = 1 + (acc >= 92 ? 1 : 0) + (won ? 1 : 0);
   const key = 'bestWpm_' + difficulty;
-  const record = wpm > store.get(key, 0);
-  if (record) store.set(key, wpm);
+  const record = wpm > me.get(key, 0);
+  if (record) me.set(key, wpm);
+  logGame({ g: 'race', score: wpm, acc, won, sec: Math.round(sec), stars, rec: record, what: TEXTS[race.idx].title });
   won ? sfx.win() : sfx.level();
   const next = (race.idx + 1) % TEXTS.length;
   showResult({
@@ -1320,9 +1431,10 @@ function gameOver() {
   const acc = total ? Math.round(rain.hits / total * 100) : 0;
   const lpm = min > 0 ? Math.round(rain.hits / min) : 0;
   const key = 'bestRain_' + difficulty;
-  const record = rain.score > store.get(key, 0);
-  if (record) store.set(key, rain.score);
+  const record = rain.score > me.get(key, 0);
+  if (record) me.set(key, rain.score);
   const stars = rain.level >= 5 ? 3 : rain.level >= 3 ? 2 : 1;
+  logGame({ g: 'rain', score: rain.score, level: rain.level, acc, sec: Math.round(min * 60), stars, rec: record });
   setTimeout(() => {
     sfx.win();
     showResult({
@@ -1637,9 +1749,10 @@ function endDino() {
   drawDino();
   const score = dino.score + Math.floor(dino.dist / 20);
   const key = 'bestDino_' + difficulty;
-  const record = score > store.get(key, 0);
-  if (record) store.set(key, score);
+  const record = score > me.get(key, 0);
+  if (record) me.set(key, score);
   const stars = dino.jumps >= 25 ? 3 : dino.jumps >= 10 ? 2 : 1;
+  logGame({ g: 'dino', score, jumps: dino.jumps, perfect: dino.perfect, stars, rec: record });
   setTimeout(() => {
     sfx.win();
     showResult({
@@ -1867,9 +1980,10 @@ function endPcQuiz() {
   stopPc();
   const tot = pc.qs.length, pct = pc.score / (tot * (pc.cfg.time ? 150 : 100));
   const key = 'bestPc_' + difficulty;
-  const record = pc.score > store.get(key, 0);
-  if (record) store.set(key, pc.score);
+  const record = pc.score > me.get(key, 0);
+  if (record) me.set(key, pc.score);
   const stars = pct >= 0.9 ? 3 : pct >= 0.6 ? 2 : 1;
+  logGame({ g: 'pc', score: pc.score, correct: pc.correct, tot, stars, rec: record });
   sfx.win();
   showResult({
     emoji: stars === 3 ? '🏆' : stars === 2 ? '🎉' : '🖥️',
@@ -2010,7 +2124,7 @@ function normAns(s) {
   return s.replace(/ /g, '');
 }
 const sameChar = (a, b) => stripAccents(a.toLowerCase()) === stripAccents(b.toLowerCase());
-function quizStars() { const s = store.get('quizStars', []); return TAPPE.map((_, i) => s[i] || 0); }
+function quizStars() { const s = me.get('quizStars', []); return TAPPE.map((_, i) => s[i] || 0); }
 function curQ() { return quiz.items[quiz.i]; }
 
 function buildRun(ti) {
@@ -2269,11 +2383,13 @@ function endTappa() {
   const sec = (performance.now() - quiz.start) / 1000;
   const pct = quiz.score / quiz.max;
   const stars = pct >= 0.85 ? 3 : pct >= 0.6 ? 2 : 1;
-  const saved = store.get('quizStars', []);
+  const saved = me.get('quizStars', []);
   const prev = saved[ti] || 0;
-  if (stars > prev) { saved[ti] = stars; store.set('quizStars', saved); }
+  if (stars > prev) { saved[ti] = stars; me.set('quizStars', saved); }
   const allDone = quizStars().every(s => s > 0);
   const acc = quiz.copyAcc.length ? Math.round(quiz.copyAcc.reduce((a, b) => a + b, 0) / quiz.copyAcc.length) : 100;
+  logGame({ g: 'quiz', tappa: ti + 1, score: quiz.score, max: quiz.max, correct: quiz.firstTry, tot: quiz.nQ,
+            chars: quiz.chars, acc, sec: Math.round(sec), stars, rec: prev > 0 && stars > prev });
   let actions;
   if (last && allDone) actions = [['🎓 Ritira il diploma', openDiploma, true], ['🗺️ Mappa', openQuizMap], ['🏠 Menu', goMenu]];
   else if (!last) actions = [[`➡ Tappa ${ti + 2}`, () => startTappa(ti + 1), true], ['↻ Rifai la tappa', () => startTappa(ti)], ['🗺️ Mappa', openQuizMap]];
@@ -2295,7 +2411,7 @@ function endTappa() {
 function openDiploma() {
   hideResult(); stopQuiz();
   show('diploma'); window.scrollTo(0, 0);
-  const name = store.get('quizName', '');
+  const name = me.get('quizName', '');
   name ? renderDiploma(name) : askName();
 }
 function askName() {
@@ -2308,11 +2424,11 @@ function askName() {
       <button class="play-btn yellow" id="dipGo">Crea il diploma 🎓</button>
     </div>`;
   const inp = $('dipName');
-  inp.value = store.get('quizName', '');
+  inp.value = me.get('quizName', '') || (currentPlayer() ? currentPlayer().name : '');
   const go = () => {
     const n = inp.value.trim().replace(/\s+/g, ' ');
     if (!n) { inp.classList.remove('error'); void inp.offsetWidth; inp.classList.add('error'); return; }
-    store.set('quizName', n); sfx.win(); renderDiploma(n);
+    me.set('quizName', n); sfx.win(); renderDiploma(n);
   };
   $('dipGo').onclick = go;
   inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); go(); } });
@@ -2399,6 +2515,221 @@ document.addEventListener('keydown', e => {
   }
 });
 
+/* ======================= GIOCATORI ======================= */
+const LEGACY_KEY = /^dv_(best(Wpm|Rain|Dino|Pc)_\w+|quizStars|quizName)$/;
+function renderPlayerBtn() {
+  const p = currentPlayer();
+  $('playerBtn').textContent = p ? '👤 ' + p.name : '👤 Chi gioca?';
+}
+function openPlayers(force) {
+  goMenu();
+  const games = id => store.get(`p${id}_history`, []).length;
+  $('playerCard').innerHTML = `
+    <div class="r-emoji">🧑‍🎓</div>
+    <h2>Chi gioca?</h2>
+    <p class="r-sub">${players.length ? 'Scegli il tuo nome: record e progressi sono salvati per ognuno.' : 'Scrivi il tuo nome per iniziare: così ci ricordiamo dei tuoi progressi!'}</p>
+    <div class="pl-list">${players.map(p => `
+      <div class="pl-row">
+        <button class="pl ${p.id === playerId ? 'on' : ''}" data-id="${p.id}">👤 ${esc(p.name)}<small>${games(p.id)} partite</small></button>
+        <button class="pl-del" data-del="${p.id}" title="Elimina ${esc(p.name)}">🗑️</button>
+      </div>`).join('')}
+    </div>
+    <div class="pl-new">
+      <input class="type-input" id="plName" maxlength="30" autocomplete="off" spellcheck="false" placeholder="${players.length ? 'Nuovo giocatore…' : 'Il tuo nome…'}">
+      <button class="btn primary" id="plAdd">➕ Aggiungi</button>
+    </div>
+    ${force ? '' : '<div class="r-actions" style="margin-top:14px"><button class="btn" id="plClose">Chiudi</button></div>'}`;
+  const card = $('playerCard');
+  card.querySelectorAll('.pl').forEach(b => b.onclick = () => selectPlayer(b.dataset.id));
+  card.querySelectorAll('.pl-del').forEach(b => b.onclick = () => deletePlayer(b.dataset.del));
+  const inp = $('plName');
+  const add = () => {
+    const n = inp.value.trim().replace(/\s+/g, ' ');
+    if (!n) { inp.classList.remove('error'); void inp.offsetWidth; inp.classList.add('error'); inp.focus(); return; }
+    addPlayer(n);
+  };
+  $('plAdd').onclick = add;
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); add(); }
+    if (e.key === 'Escape' && !force) closePlayers();
+  });
+  if (!force) $('plClose').onclick = closePlayers;
+  $('playerOverlay').classList.add('show');
+  inp.focus();
+}
+function closePlayers() { $('playerOverlay').classList.remove('show'); }
+function addPlayer(name) {
+  const id = Date.now().toString(36);
+  if (!players.length) {
+    // il primo giocatore eredita i record salvati prima che esistessero i giocatori
+    try {
+      Object.keys(localStorage).filter(k => LEGACY_KEY.test(k)).forEach(k => {
+        localStorage.setItem(`dv_p${id}_` + k.slice(3), localStorage.getItem(k));
+        localStorage.removeItem(k);
+      });
+    } catch (e) {}
+  }
+  players.push({ id, name, created: Date.now() });
+  store.set('players', players);
+  sfx.level();
+  selectPlayer(id);
+}
+function selectPlayer(id) {
+  playerId = id; store.set('player', id);
+  renderPlayerBtn(); closePlayers(); goMenu();
+}
+function deletePlayer(id) {
+  const p = players.find(x => x.id === id);
+  if (!p || !confirm(`Eliminare ${p.name} e tutti i suoi progressi?\nNon si può annullare (a meno di avere una copia su file).`)) return;
+  try { Object.keys(localStorage).filter(k => k.startsWith(`dv_p${id}_`)).forEach(k => localStorage.removeItem(k)); } catch (e) {}
+  players = players.filter(x => x.id !== id);
+  store.set('players', players);
+  if (playerId === id) { playerId = players.length ? players[0].id : null; store.set('player', playerId); }
+  renderPlayerBtn();
+  openPlayers(!playerId);
+}
+$('playerBtn').onclick = () => openPlayers(!playerId);
+
+/* ======================= PROGRESSI ======================= */
+const GAMES = {
+  race: { e: '🏎️', n: 'Gara di scrittura', sub: x => x.what, res: x => `${x.score} ppm · 🎯 ${x.acc}%${x.won ? ' · 🏆 robot battuto' : ''}` },
+  rain: { e: '🫧', n: 'Pioggia di lettere', res: x => `${x.score} punti · livello ${x.level}` },
+  dino: { e: '🤖', n: 'Corsa delle scorciatoie', res: x => `${x.score} punti · ${x.jumps} salti` },
+  pc:   { e: '🖥️', n: 'Quiz del PC', res: x => `${x.score} punti · ${x.correct}/${x.tot} giuste` },
+  quiz: { e: '🧩', n: 'Grande quiz', sub: x => `Tappa ${x.tappa}: ${TAPPE[x.tappa - 1].title}`, res: x => `${x.score}/${x.max} punti · ✍️ ${x.chars} lettere` },
+};
+const hist = { filter: 'all', shown: 40 };
+const dayKey = ts => new Date(ts).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+function openHistory() {
+  goMenu();
+  hist.filter = 'all'; hist.shown = 40;
+  const p = currentPlayer();
+  $('histTitle').textContent = p ? `📒 I progressi di ${p.name}` : '📒 I miei progressi';
+  const h = me.get('history', []);
+  const days = new Set(h.map(x => new Date(x.ts).toDateString())).size;
+  const best = Math.max(0, ...Object.keys(DIFF).map(d => me.get('bestWpm_' + d, 0)));
+  const stars = quizStars().reduce((a, b) => a + b, 0);
+  $('histSum').innerHTML = [
+    ['🎮 Partite giocate', h.length], ['📅 Giorni di gioco', days],
+    ['⚡ Velocità migliore', best + ' ppm'], ['🧩 Stelle grande quiz', `${stars} / ${TAPPE.length * 3}`],
+  ].map(([l, v]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join('');
+  renderHistChart(h.filter(x => x.g === 'race').slice(-30));
+  const rows = [['🏎️ Gara (ppm)', 'bestWpm_'], ['🫧 Pioggia', 'bestRain_'], ['🤖 Corsa', 'bestDino_'], ['🖥️ Quiz PC', 'bestPc_']];
+  $('histRecords').innerHTML = `<table class="h-table">
+    <tr><th></th>${Object.values(DIFF).map(d => `<th class="n">${d.label}</th>`).join('')}</tr>
+    ${rows.map(([l, k]) => `<tr><td>${l}</td>${Object.keys(DIFF).map(d => `<td class="n">${me.get(k + d, 0) || '–'}</td>`).join('')}</tr>`).join('')}
+    <tr><td>🧩 Grande quiz</td><td class="n" colspan="3">${'⭐'.repeat(stars) || '–'}</td></tr>
+  </table>`;
+  const counts = {}; h.forEach(x => counts[x.g] = (counts[x.g] || 0) + 1);
+  $('histFilter').innerHTML = [['all', '📋 Tutte', h.length], ...Object.entries(GAMES).map(([k, g]) => [k, `${g.e} ${g.n}`, counts[k] || 0])]
+    .map(([k, l, c]) => `<button class="tab" data-f="${k}">${l} (${c})</button>`).join('');
+  $('histFilter').querySelectorAll('.tab').forEach(b => b.onclick = () => { hist.filter = b.dataset.f; hist.shown = 40; renderHistList(); });
+  renderHistList();
+  show('storico'); window.scrollTo(0, 0);
+}
+
+function renderHistList() {
+  document.querySelectorAll('#histFilter .tab').forEach(b => b.setAttribute('aria-pressed', b.dataset.f === hist.filter));
+  const all = me.get('history', []).filter(x => hist.filter === 'all' || x.g === hist.filter).reverse();
+  if (!all.length) { $('histList').innerHTML = '<div class="h-empty">Ancora nessuna partita qui. Gioca e i risultati compariranno in questo diario! ✨</div>'; return; }
+  let html = '', lastDay = '';
+  all.slice(0, hist.shown).forEach(x => {
+    const g = GAMES[x.g]; if (!g) return;
+    const day = dayKey(x.ts);
+    if (day !== lastDay) { html += `<div class="h-day">${day}</div>`; lastDay = day; }
+    const time = new Date(x.ts).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+    html += `<div class="h-row">
+      <span class="h-time">${time}</span>
+      <span class="h-what">${g.e} <b>${g.n}</b><span class="pill ${x.diff}">${DIFF[x.diff] ? DIFF[x.diff].label : ''}</span>${g.sub ? `<small>${esc(g.sub(x))}</small>` : ''}</span>
+      <span class="h-res">${g.res(x)}</span>
+      <span class="h-stars">${[1, 2, 3].map(i => `<span class="${i <= (x.stars || 0) ? '' : 'off'}">⭐</span>`).join('')}${x.rec ? ' 🏆' : ''}</span>
+    </div>`;
+  });
+  if (all.length > hist.shown) html += `<button class="btn h-more" id="histMore">Mostra altre partite (${all.length - hist.shown})</button>`;
+  $('histList').innerHTML = html;
+  if ($('histMore')) $('histMore').onclick = () => { hist.shown += 40; renderHistList(); };
+}
+
+/* linea della velocità (parole al minuto) nelle ultime gare */
+function renderHistChart(races) {
+  const box = $('histChart');
+  if (races.length < 2) {
+    box.innerHTML = `<div class="h-empty">${races.length ? 'Hai fatto 1 gara: ancora una e qui vedrai la tua velocità crescere! 📈' : 'Fai almeno 2 gare di scrittura e qui vedrai la tua velocità crescere! 📈'}</div>`;
+    return;
+  }
+  const W = 600, H = 240, L = 40, R = 46, T = 18, B = 30;
+  const top = Math.max(10, Math.ceil(Math.max(...races.map(r => r.score)) / 5) * 5);
+  const x = i => L + i * (W - L - R) / (races.length - 1);
+  const y = v => T + (1 - v / top) * (H - T - B);
+  const ticks = [0, 1, 2, 3, 4].map(i => Math.round(top * i / 4));
+  const date = ts => new Date(ts).toLocaleDateString('it-IT', { day: 'numeric', month: 'short' });
+  const lastI = races.length - 1, last = races[lastI];
+  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Velocità nelle ultime ${races.length} gare, da ${races[0].score} a ${last.score} parole al minuto">
+    ${ticks.map(t => `<line x1="${L}" x2="${W - R}" y1="${y(t)}" y2="${y(t)}" stroke="#efe7d8" stroke-width="1"/>
+      <text class="h-axis" x="${L - 8}" y="${y(t) + 4}" text-anchor="end">${t}</text>`).join('')}
+    <text class="h-axis" x="${x(0)}" y="${H - 8}" text-anchor="start">${date(races[0].ts)}</text>
+    <text class="h-axis" x="${x(lastI)}" y="${H - 8}" text-anchor="end">${date(last.ts)}</text>
+    <polyline fill="none" stroke="var(--blue)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"
+      points="${races.map((r, i) => `${x(i)},${y(r.score)}`).join(' ')}"/>
+    ${races.map((r, i) => `<circle cx="${x(i)}" cy="${y(r.score)}" r="5" fill="var(--blue)" stroke="#fff" stroke-width="2"/>`).join('')}
+    <text class="h-val" x="${x(lastI) + 10}" y="${y(last.score) + 5}">${last.score}</text>
+    ${races.map((r, i) => `<circle class="h-hit" data-i="${i}" cx="${x(i)}" cy="${y(r.score)}" r="16" fill="transparent"/>`).join('')}
+  </svg>
+  <div class="h-tip" id="histTip"></div>
+  <p class="h-axis" style="margin:6px 0 0; text-align:center">Parole al minuto nelle ultime ${races.length} gare</p>`;
+  const tip = $('histTip'), svg = box.querySelector('svg');
+  box.querySelectorAll('.h-hit').forEach(c => {
+    c.addEventListener('mouseenter', () => {
+      const r = races[+c.dataset.i], s = svg.getBoundingClientRect().width / W;
+      tip.innerHTML = `${r.score} ppm · 🎯 ${r.acc}%<br>${date(r.ts)} · ${DIFF[r.diff] ? DIFF[r.diff].label : ''}`;
+      tip.style.left = c.getAttribute('cx') * s + 'px'; tip.style.top = c.getAttribute('cy') * s + 'px';
+      tip.style.display = 'block';
+    });
+    c.addEventListener('mouseleave', () => tip.style.display = 'none');
+  });
+}
+
+/* ---------- copia di sicurezza su file ---------- */
+function exportData() {
+  const data = {};
+  try { Object.keys(localStorage).filter(k => k.startsWith('dv_')).forEach(k => data[k] = localStorage.getItem(k)); } catch (e) {}
+  const blob = new Blob([JSON.stringify({ app: 'dita-volanti', version: 1, exported: new Date().toISOString(), data }, null, 1)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `dita-volanti-progressi-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+function importData(file) {
+  const r = new FileReader();
+  r.onload = () => {
+    let f;
+    try { f = JSON.parse(r.result); } catch (e) { f = null; }
+    if (!f || f.app !== 'dita-volanti' || typeof f.data !== 'object') { alert('Questo file non contiene progressi di Dita Volanti.'); return; }
+    const names = (JSON.parse(f.data.dv_players || '[]')).map(p => p.name).join(', ') || 'nessun giocatore';
+    if (!confirm(`Caricare i progressi del file (${names})?\nI progressi salvati ora in questo browser verranno sostituiti.`)) return;
+    try {
+      Object.keys(localStorage).filter(k => k.startsWith('dv_')).forEach(k => localStorage.removeItem(k));
+      Object.entries(f.data).forEach(([k, v]) => { if (k.startsWith('dv_') && typeof v === 'string') localStorage.setItem(k, v); });
+    } catch (e) { alert('Non sono riuscito a salvare i dati in questo browser.'); return; }
+    location.reload();
+  };
+  r.readAsText(file);
+}
+function clearProgress() {
+  const p = currentPlayer(); if (!p) return;
+  if (!confirm(`Cancellare tutti i progressi di ${p.name} (record, stelle e diario)?\nNon si può annullare (a meno di avere una copia su file).`)) return;
+  try { Object.keys(localStorage).filter(k => k.startsWith(`dv_p${p.id}_`)).forEach(k => localStorage.removeItem(k)); } catch (e) {}
+  openHistory();
+}
+$('openHistory').onclick = openHistory;
+$('histMenu').onclick = goMenu;
+$('histExport').onclick = exportData;
+$('histImport').onclick = () => $('histFile').click();
+$('histFile').onchange = e => { const f = e.target.files[0]; e.target.value = ''; if (f) importData(f); };
+$('histClear').onclick = clearProgress;
+
 /* pausa automatica se si cambia finestra durante la pioggia o la corsa */
 document.addEventListener('visibilitychange', () => {
   if (document.hidden && rain.running) { rain.running = false; cancelAnimationFrame(rain.raf); rain.paused = true; }
@@ -2412,6 +2743,8 @@ document.addEventListener('visibilitychange', () => {
 });
 
 renderDiff();
+renderPlayerBtn();
+if (!playerId) openPlayers(true);
 </script>
 </body>
 </html>
